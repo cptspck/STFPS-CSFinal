@@ -1,8 +1,3 @@
-/*
-Keegan Lanzillotta
-Version 0.1
-April 7, 2017
-*/
 import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,7 +17,7 @@ public class Panel extends JPanel {
    private BufferedImage playerImage;
    private Graphics playerBuffer;
    
-   private Loader load;  
+   private Scene scene;  
     
    public Panel(int w, int h){
       width = w;
@@ -37,22 +32,32 @@ public class Panel extends JPanel {
       playerImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       playerBuffer = playerImage.getGraphics();
       
-      load = new Loader(bgBuffer);
-      
       addKeyListener(new Key());
       setFocusable(true);
+      
+      Loader.load_init(bgBuffer, this);
    }
    private class Key implements KeyListener {
-      public void keyPressed(KeyEvent e){         
-         if(e.getKeyCode() == KeyEvent.VK_Q && e.getModifiers() == InputEvent.CTRL_MASK){
+      public void keyPressed(KeyEvent e){
+         if(scene != null){         
+            if(e.getKeyCode() == KeyEvent.VK_W){
+               scene.forward();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_A){
+               scene.left();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_S){
+               scene.back();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_D){
+               scene.right();
+            }
+         }         
+         if(e.getKeyCode() == KeyEvent.VK_Q && e.getModifiers() == KeyEvent.CTRL_MASK){
             System.exit(0);
          }
       }
-      public void keyReleased(KeyEvent e){         
-         if(e.getKeyCode() == KeyEvent.VK_Q){
-            System.exit(0);
-         }
-      }
+      public void keyReleased(KeyEvent e){}
       public void keyTyped(KeyEvent e){}
    }
    public void paintComponent(Graphics g)

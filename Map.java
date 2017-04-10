@@ -1,8 +1,3 @@
-/*
-Keegan Lanzillotta
-Version 0.1
-April 7, 2017
-*/
 import java.util.*;
 /*
 FORMAT FOR MAP FILES:

@@ -1,9 +1,3 @@
-/*
-Keegan Lanzillotta
-Version 0.1
-April 7, 2017
-*/
-
 public abstract class Entity implements Runnable {
    protected double myX;
    protected double myY;
@@ -20,5 +14,29 @@ public abstract class Entity implements Runnable {
    protected abstract void step();
    public void run(){
       step();
+   }
+   public double getX(){
+      return myX;
+   }
+   public double getY(){
+      return myY;
+   }
+   public double getHealth(){
+      return myHealth;
+   }
+   public double getDir(){
+      return myDir;
+   }
+   public void setX(double x){
+      myX = x;
+   }
+   public void setY(double y){
+      myY = y;
+   }
+   public void setHealth(double h){
+      myHealth = h;
+   }
+   public void setDir(double d){
+      myDir = d;
    }
 }

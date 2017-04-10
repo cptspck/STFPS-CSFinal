@@ -1,9 +1,5 @@
-/*
-Keegan Lanzillotta
-Version 0.1
-April 7, 2017
-*/
 import java.util.*;
+import java.io.*;
 /*
 SAVE FILE FORMAT:
 
@@ -11,18 +7,33 @@ SAVE FILE FORMAT:
 <player's y>
 <player's dir>
 <player's health>
-<player's map>
+<player's map (<name>.map file)>
+<player's weapon (<name>.wp file)>
+<player's speed>
 */
 public class Save {
    private String m;
    private Player player;
    public Save(Scanner in){
-      int h = in.nextInt();
+      double x = in.nextDouble();
+      double y = in.nextDouble();
+      double d = in.nextDouble();
+      double h = in.nextDouble();
       String m = in.next();
-      int x = in.nextInt();
-      int y = in.nextInt();
-      int d = in.nextInt();
+      String w = in.next();
+      double s = in.nextDouble();
       
-      player = new Player(5.5, 5.4, 5.3, 5.7, new Weapon(5));
+      Weapon weapon;
+      try{
+         weapon = new Weapon(new Scanner(new File("weapons/" + w + ".wp")));
+      } catch(FileNotFoundException e){
+         System.out.println("Player has bad Weapon");
+         System.exit(0);
+         return;
+      }
+      player = new Player(x, y, h, d, weapon, s);
+   }
+   public Player getPlayer(){
+      return player;
    }
 }
