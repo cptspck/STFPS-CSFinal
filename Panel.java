@@ -17,7 +17,11 @@ public class Panel extends JPanel {
    private BufferedImage playerImage;
    private Graphics playerBuffer;
    
+   //the scene to run from
    private Scene scene;  
+   
+   //key listener
+   private Key key; 
     
    public Panel(int w, int h){
       width = w;
@@ -37,6 +41,12 @@ public class Panel extends JPanel {
       
       Loader.load_init(bgBuffer, this);
    }
+   public void loaded(Scene s){
+      scene = s;
+      key = new Key();
+      addKeyListener(key);
+   }
+   
    private class Key implements KeyListener {
       public void keyPressed(KeyEvent e){
          if(scene != null){         

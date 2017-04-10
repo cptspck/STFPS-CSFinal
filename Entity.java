@@ -1,3 +1,5 @@
+import java.util.concurrent.TimeUnit;
+
 public abstract class Entity implements Runnable {
    protected double myX;
    protected double myY;
@@ -14,6 +16,9 @@ public abstract class Entity implements Runnable {
    protected abstract void step();
    public void run(){
       step();
+      try{
+         TimeUnit.MILLISECONDS.sleep(500);
+      } catch(Exception e){}
    }
    public double getX(){
       return myX;

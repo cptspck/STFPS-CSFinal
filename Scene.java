@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.AlphaComposite;
 import java.awt.image.*;
+import java.io.*;
 
 public class Scene {
    private Save save;
@@ -26,5 +27,12 @@ public class Scene {
    }
    public void back(){
       save.getPlayer().back();
+   }
+   public void save(String filename){
+      try {
+         save.save(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("save/" + filename + ".wp"), "utf-8")));
+         
+         //npc.save(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("npc/" + filename + ".npc"), "utf-8")));
+      } catch(Exception e){System.out.println("could not save");}
    }
 }

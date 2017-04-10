@@ -12,16 +12,17 @@ SAVE FILE FORMAT:
 <player's speed>
 */
 public class Save {
-   private String m;
+   private double x, y, d, h, s;
+   private String w, m;
    private Player player;
    public Save(Scanner in){
-      double x = in.nextDouble();
-      double y = in.nextDouble();
-      double d = in.nextDouble();
-      double h = in.nextDouble();
-      String m = in.next();
-      String w = in.next();
-      double s = in.nextDouble();
+      x = in.nextDouble();
+      y = in.nextDouble();
+      d = in.nextDouble();
+      h = in.nextDouble();
+      m = in.next();
+      w = in.next();
+      s = in.nextDouble();
       
       Weapon weapon;
       try{
@@ -35,5 +36,19 @@ public class Save {
    }
    public Player getPlayer(){
       return player;
+   }
+   public void save(Writer out) throws Exception{
+   //make a sring to save
+      String output = "";
+      output += x + " ";
+      output += y + " ";
+      output += d + " ";
+      output += h + " ";
+      output += m + " ";
+      output += w + " ";
+      output += s + " ";
+      
+   //save it
+      out.write(output);
    }
 }
