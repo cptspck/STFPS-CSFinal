@@ -1,14 +1,19 @@
+import java.util.*;
 public class Enemy extends Entity {
    private Path path;
    private boolean triggered;
-   private Entity[] enemies;
-   private Entity other;
+   private HashMap<Entity, Integer> enemies;
+   private Entity target;
    private double FOV;
-   public Enemy(double x, double y, double health, double dir, double fov, Weapon w, Path p){
-      super(x, y, health, dir, w);
+   public Enemy(double x, double y, double health, double dir, double fov, Weapon w, Path p, int faction, Enemy[] others){
+      super(x, y, health, dir, w, faction);
       path = p;
       triggered = false;
       FOV = fov;
+      enemies = new HashMap<Entity, Integer>();
+      for(int i = 0; i < others.length; i ++){
+         
+      }
    }
    public boolean canSee(Entity e){
       double angle = Math.atan((e.getX() - getX())/(e.getY() - getY()));
@@ -31,15 +36,23 @@ public class Enemy extends Entity {
       return leftBound <= angle && angle <= rightBound;
    }
    public void step(){
-      for(int i = 0; i < enemies.length; i++){
-         if(canSee(enemies[i])){
-            
+      for(Entity key: enemies.keySet()){
+         if(Faction.areEnemies(key, this) && canSee(key) && !triggered){
+            triggered = true;
+            target = key;
          }
       }
-      if(triggered){
-         setDir(Math.atan((other.getX() - getX())/(other.getY() - getY())));
+      //if you have been triggered, look at the triggered individual
+      if(triggered && canSee(target)){
+         setDir(Math.atan((target.getX() - getX())/(target.getY() - getY())));
       } else {
          path.move(this);
       }
+   }
+   public double getFOV(){
+      return FOV;
+   }
+   public Path getPath(){
+      return path;
    }
 }

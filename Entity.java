@@ -6,12 +6,14 @@ public abstract class Entity implements Runnable {
    protected double myHealth;
    protected double myDir;
    protected Weapon myWeapon;
-   public Entity(double x, double y, double health, double dir, Weapon w){
+   protected int myFaction;
+   public Entity(double x, double y, double health, double dir, Weapon w, int faction){
       myX = x;
       myY = y;
       myHealth = health;
       myDir = dir;
       myWeapon = w;
+      myFaction = faction;
    }
    protected abstract void step();
    public void run(){
@@ -31,6 +33,12 @@ public abstract class Entity implements Runnable {
    }
    public double getDir(){
       return myDir;
+   }
+   public Weapon getWeapon(){
+      return myWeapon;
+   }
+   public int getFaction(){
+      return myFaction;
    }
    public void setX(double x){
       myX = x;

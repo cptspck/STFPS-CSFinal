@@ -26,7 +26,7 @@ public class Save {
       
       Weapon weapon;
       try{
-         weapon = new Weapon(new Scanner(new File("weapons/" + w + ".wp")));
+         weapon = new Weapon(new Scanner(new File("weapons/" + w + ".wp")), w);
       } catch(FileNotFoundException e){
          System.out.println("Player has bad Weapon");
          System.exit(0);

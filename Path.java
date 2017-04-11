@@ -15,7 +15,9 @@ public class Path{
    private double[] xList;  //a list of x coordinates on the path
    private double[] yList; //same, but with the corresponding Ys instead
    private int cur;
-   public Path(Scanner in){
+   private String filename;
+   public Path(Scanner in, String name){
+      filename = name;
       cur = 0;
       speed = in.nextDouble();
       int size = in.nextInt();
@@ -56,5 +58,8 @@ public class Path{
       }
       e.setX(newX);
       e.setY(newY);
+   }
+   public String getSave(){
+      return filename;
    }
 }

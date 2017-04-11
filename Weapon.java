@@ -9,7 +9,11 @@ to get the damage d(x) at a distance x
 */
 public class Weapon {
    private double powers[];
-   public Weapon(Scanner in){
+   private String filename;
+   public Weapon(Scanner in, String name){
+      //save filename for future reference
+      filename = name;
+      //save the data for the polynomial
       powers = new double[7];
       for(int i = 0; i < powers.length; i ++){
          powers[i] = in.nextDouble();
@@ -18,8 +22,12 @@ public class Weapon {
    public double getDamage(double dist){
       double out = 0;
       for(int i = 0; i < powers.length; i ++){
-         out += powers[i] * Math.pow(dist, powers.length - i - 2);
+      //this should iterate through each term, adding each term to the total
+         out += powers[i] * Math.pow(dist, powers.length - i - 1);
       }
       return out;
+   }
+   public String getSave(){
+      return filename;
    }
 }

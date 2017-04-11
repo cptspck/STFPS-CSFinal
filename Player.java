@@ -1,7 +1,7 @@
 public class Player extends Entity {
    private double dX, dY, speed;
    public Player(double x, double y, double health, double dir, Weapon w, double s){
-      super(x, y, health, dir, w);
+      super(x, y, health, dir, w, Faction.STARFLEET);
       speed = s;
      
    }
