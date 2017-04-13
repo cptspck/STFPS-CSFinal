@@ -1,4 +1,5 @@
 import java.util.*;
+import java.awt.*;
 /*
 FORMAT FOR MAP FILES:
 <width> <height>
@@ -47,5 +48,46 @@ public class Map {
             matrix[i][j] = in.nextInt();
          }
       }
+   }
+   private int getVal(int x, int y){
+      return matrix[x][y];
+   }
+   public boolean isFull(int x, int y){
+      int val = getVal(x, y);
+      return val < 10 && val > 0; //full height textures are between 01 - 09, inclusive
+   }
+   public boolean isHalf(int x, int y){
+      int val = getVal(x, y);
+      return val >= 10 && val < 20; //half height textures are between 10 and 19, inclusive
+   }
+   public boolean isClear(int x, int y){
+      return getVal(x, y) == 0; //only clear if its a 00
+   }
+   public boolean isVisible(int x, int y){
+      return !isClear(x, y);
+   }
+   public int getWidth(){
+      return width;
+   }
+   public int getHeight(){
+      return height;
+   }
+   public Color getColor(int x, int y){
+      int c = getVal(x, y);
+      c = (c > 10)? c - 10: c;
+      switch(c){
+         case 1:
+            return Color.GREEN;
+         case 2:
+            return Color.RED;
+         case 3:
+            return Color.BLUE;
+         case 4:
+            return Color.PINK;
+         case 5:
+            return Color.MAGENTA;
+            
+      }
+      return Color.GRAY;
    }
 }

@@ -107,7 +107,6 @@ public class Loader{
       String filename = input.toLowerCase();
       
       try {
-         map = new Map(new Scanner(new File("map/" + filename + ".map")));
          save = new Save(new Scanner(new File("save/" + filename + ".save")));
          npc = new NPC(new Scanner(new File("npc/" + filename + ".npc")));
       } catch(FileNotFoundException e){
@@ -125,7 +124,7 @@ public class Loader{
       g.drawString("Success! Loading...", 150, 190);
       p.repaint();
       //make the scene object
-      scene = new Scene(map, save, npc);
+      scene = new Scene(save, npc);
       //delete the listeners, not needed anymore
       p.removeKeyListener(key);
       p.removeMouseListener(mouse);

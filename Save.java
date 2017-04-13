@@ -1,5 +1,10 @@
 import java.util.*;
 import java.io.*;
+import javax.swing.JPanel;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.AlphaComposite;
+import java.awt.image.*;
 /*
 SAVE FILE FORMAT:
 
@@ -15,6 +20,8 @@ public class Save {
    private double x, y, d, h, s;
    private String w, m;
    private Player player;
+   private Map map;
+   private Thread thread;
    public Save(Scanner in){
       x = in.nextDouble();
       y = in.nextDouble();
@@ -32,10 +39,25 @@ public class Save {
          System.exit(0);
          return;
       }
-      player = new Player(x, y, h, d, weapon, s);
+      try{
+         map = new Map(new Scanner(new File("map/" + m + ".map")));
+      } catch(FileNotFoundException e){
+         System.out.println("Player has bad Map");
+         System.exit(0);
+         return;
+      }
+      player = new Player(x, y, h, d, weapon, s, map);
+   }
+   public Map getMap(){
+      return map;
    }
    public Player getPlayer(){
       return player;
+   }
+   public void start(){
+      thread = new Thread(player);
+      thread.start();
+      System.out.println("player thread started");
    }
    public void save(Writer out) throws Exception{
    //make a sring to save
@@ -50,5 +72,8 @@ public class Save {
       
    //save it
       out.write(output);
+   }
+   public void render(Graphics g, NPC n){
+      player.render(g);
    }
 }

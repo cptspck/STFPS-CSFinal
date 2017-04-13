@@ -22,6 +22,9 @@ public class Panel extends JPanel {
    
    //key listener
    private Key key; 
+   
+   //thread to run the animation
+   private Thread animator;
     
    public Panel(int w, int h){
       width = w;
@@ -45,6 +48,23 @@ public class Panel extends JPanel {
       scene = s;
       key = new Key();
       addKeyListener(key);
+      scene.render(bgBuffer);
+      repaint();
+      scene.start();
+      
+      animator = new Thread(new Runnable() {
+         public void run(){
+            while(true){
+               scene.render(bgBuffer);
+               repaint();
+               try {
+                  Thread.sleep(300);
+               } catch(InterruptedException e) {}
+            }
+         }
+      });
+      
+      animator.start();
    }
    
    private class Key implements KeyListener {
@@ -61,6 +81,12 @@ public class Panel extends JPanel {
             }         
             if(e.getKeyCode() == KeyEvent.VK_D){
                scene.right();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_Q){
+               scene.turnLeft();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_E){
+               scene.turnRight();
             }
          }         
          if(e.getKeyCode() == KeyEvent.VK_Q && e.getModifiers() == KeyEvent.CTRL_MASK){

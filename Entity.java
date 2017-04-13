@@ -17,10 +17,12 @@ public abstract class Entity implements Runnable {
    }
    protected abstract void step();
    public void run(){
-      step();
-      try{
-         TimeUnit.MILLISECONDS.sleep(500);
-      } catch(Exception e){}
+      while(true){
+         step();
+         try{
+            Thread.sleep(20);
+         } catch(Exception e){}
+      }
    }
    public double getX(){
       return myX;
