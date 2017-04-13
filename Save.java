@@ -74,6 +74,6 @@ public class Save {
       out.write(output);
    }
    public void render(Graphics g, NPC n){
-      player.render(g);
+      player.newRender(g);
    }
 }

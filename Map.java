@@ -43,13 +43,16 @@ public class Map {
       height = in.nextInt();
       
       matrix = new int[width][height];
-      for(int i = 0; i < matrix.length; i ++){
-         for(int j = 0; j < matrix[i].length; j ++){
-            matrix[i][j] = in.nextInt();
+      for(int x = 0; x < matrix.length; x ++){
+         for(int y = 0; y < matrix[x].length; y ++){
+            matrix[x][y] = in.nextInt();
          }
       }
    }
    private int getVal(int x, int y){
+      if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
+         return 10;
+      }
       return matrix[x][y];
    }
    public boolean isFull(int x, int y){
@@ -86,8 +89,16 @@ public class Map {
             return Color.PINK;
          case 5:
             return Color.MAGENTA;
+         case 6:
+            return Color.YELLOW;
+         case 7:
+            return Color.CYAN;
+         case 8:
+            return Color.ORANGE;
+         case 9:
+            return Color.WHITE;
             
       }
-      return Color.GRAY;
+      return new Color(120, 120, 120, 120);
    }
 }

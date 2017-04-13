@@ -1,4 +1,4 @@
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.AlphaComposite;
@@ -26,7 +26,7 @@ public class Panel extends JPanel {
    //thread to run the animation
    private Thread animator;
     
-   public Panel(int w, int h){
+   public Panel(int w, int h){      
       width = w;
       height = h;
       
@@ -45,6 +45,13 @@ public class Panel extends JPanel {
       Loader.load_init(bgBuffer, this);
    }
    public void loaded(Scene s){
+      
+      //draw phaser
+      playerBuffer.drawImage(new ImageIcon("images/phaser.png").getImage(), 610, 300, 190, 150, null);
+      playerBuffer.setColor(new Color(50, 0, 80, 255));
+      playerBuffer.fillRect(350, 223, 100, 4);
+      playerBuffer.fillRect(398, 175, 4, 100);
+      
       scene = s;
       key = new Key();
       addKeyListener(key);
@@ -58,8 +65,8 @@ public class Panel extends JPanel {
                scene.render(bgBuffer);
                repaint();
                try {
-                  Thread.sleep(300);
-               } catch(InterruptedException e) {}
+                  Thread.sleep(15);
+               } catch (Exception e){}
             }
          }
       });
@@ -93,7 +100,10 @@ public class Panel extends JPanel {
             System.exit(0);
          }
       }
-      public void keyReleased(KeyEvent e){}
+      public void keyReleased(KeyEvent e){
+         if(scene != null)
+            scene.stopMovement();
+      }
       public void keyTyped(KeyEvent e){}
    }
    public void paintComponent(Graphics g)

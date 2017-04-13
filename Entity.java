@@ -20,7 +20,7 @@ public abstract class Entity implements Runnable {
       while(true){
          step();
          try{
-            Thread.sleep(20);
+            Thread.sleep(50);
          } catch(Exception e){}
       }
    }
