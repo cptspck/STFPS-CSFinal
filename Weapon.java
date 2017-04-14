@@ -14,7 +14,7 @@ public class Weapon {
       //save filename for future reference
       filename = name;
       //save the data for the polynomial
-      powers = new double[7];
+      powers = new double[8];
       for(int i = 0; i < powers.length; i ++){
          powers[i] = in.nextDouble();
       }
@@ -24,6 +24,11 @@ public class Weapon {
       for(int i = 0; i < powers.length; i ++){
       //this should iterate through each term, adding each term to the total
          out += powers[i] * Math.pow(dist, powers.length - i - 1);
+         //System.out.println(powers[i] + " * (" + dist + "^" + (powers.length - i -1) + ") = " + (powers[i] * Math.pow(dist, powers.length - i - 1)));
+         //System.out.println("\t" + out);
+      }
+      if(out <= 0){
+         out = 0;
       }
       return out;
    }

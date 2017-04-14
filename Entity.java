@@ -18,6 +18,9 @@ public abstract class Entity implements Runnable {
    protected abstract void step();
    public void run(){
       while(true){
+         if(myHealth <= 0){
+            while(true){}
+         }
          step();
          try{
             Thread.sleep(50);

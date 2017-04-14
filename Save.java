@@ -59,6 +59,10 @@ public class Save {
       thread.start();
       System.out.println("player thread started");
    }
+   public void shoot(Graphics g){
+      g.setColor(new Color(119, 231, 239));
+      g.drawLine(400, 225, 630, 330);
+   }
    public void save(Writer out) throws Exception{
    //make a sring to save
       String output = "";

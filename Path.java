@@ -37,8 +37,17 @@ public class Path{
       e.setDir(Math.atan((xList[cur] - e.getX())/(yList[cur] - e.getY())));
    }
    public void move(Enemy e){
+      if(xList[cur] == e.getX() && e.getY() == yList[cur]){
+         System.out.println("\n\n\n\t\tNEXT!!!!\n");
+         cur++;
+      }
+   
       double prevDistX = xList[cur] - e.getX();
       double prevDistY = yList[cur] - e.getY();
+      
+      double newDir = Math.atan2(xList[cur] - e.getX(), yList[cur] - e.getY());
+      
+      e.setDir(newDir);
       
       double newX = e.getX() + (Math.sin(e.getDir()) * speed);
       double newY = e.getY() + (Math.cos(e.getDir()) * speed);
@@ -51,10 +60,9 @@ public class Path{
          newY = yList[cur];
          
          cur++;
-         if(cur <= xList.length - 1){
+         if(cur >= xList.length - 1){
             cur = 0;
          }
-         move(e);
       }
       e.setX(newX);
       e.setY(newY);

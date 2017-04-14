@@ -22,22 +22,34 @@ public class Scene {
    public void right(){
       save.getPlayer().right();
    }
+   public void shoot(Graphics g){
+      npc.shoot(save.getPlayer().getWeapon());
+      save.shoot(g);
+   }
    public void back(){
       save.getPlayer().back();
    }
-   public void turnRight(){
-      save.getPlayer().tr();
+   public void turnRight(double arg){
+      save.getPlayer().tr(arg);
    }
-   public void turnLeft(){
-      save.getPlayer().tl();
+   public void turnLeft(double arg){
+      save.getPlayer().tl(arg);
    }
    public void stopMovement(){
       save.getPlayer().stopMovement();
    }
-   public void render(Graphics g){
-      save.render(g, npc);
-      g.setColor(new Color(255, 153, 0));
-      g.fillRect(0, 400, 50, 50);
+   public void render(Graphics bg, Graphics enemyG, Graphics playerG){
+   //draw building
+      save.render(bg, npc);
+   //draw NPCs
+      npc.render(enemyG, save.getPlayer());
+   
+      playerG.setColor(new Color(255, 153, 0));
+      playerG.fillRect(0, 400, 50, 50);
+      
+      //clear the compass
+      playerG.setColor(Color.BLACK);
+      playerG.fillRect(0, 375, 75, 75);
       
       //draw the map on the compass
       double w = 50.0 / map.getWidth();
@@ -45,8 +57,8 @@ public class Scene {
       for(int x = 0; x < map.getWidth(); x++){
          for(int y = 0; y < map.getHeight(); y ++){
             if(map.isVisible(x, y)){
-               g.setColor(map.getColor(x, y));
-               g.fillRect((int)(x * w), (int)((y * h) + 400), (int)w, (int)h);
+               playerG.setColor(map.getColor(x, y));
+               playerG.fillRect((int)(x * w), (int)((y * h) + 400), (int)w, (int)h);
             }
          }
       }
@@ -56,28 +68,38 @@ public class Scene {
       int startY = 400 + (int)(save.getPlayer().getY() * h);
       int x,y;
       
-      g.setColor(Color.ORANGE); 
+      playerG.setColor(Color.ORANGE); 
       
       
        x = startX + (int)(Math.sin(save.getPlayer().getDir() + (Math.PI / 4)) * 15);
        y = startY + (int)(Math.cos(save.getPlayer().getDir() + (Math.PI / 4)) * 15);
-      g.drawLine(startX, startY, x, y);
+      playerG.drawLine(startX, startY, x, y);
        
        x = startX + (int)(Math.sin(save.getPlayer().getDir() - (Math.PI / 4)) * 15);
        y = startY + (int)(Math.cos(save.getPlayer().getDir() - (Math.PI / 4)) * 15);
-      g.drawLine(startX, startY, x, y);
+      playerG.drawLine(startX, startY, x, y);
        
        x = startX + (int)(Math.sin(save.getPlayer().getDir()) * 15);
        y = startY + (int)(Math.cos(save.getPlayer().getDir()) * 15);
       
         
             
-      g.setColor(new Color(51, 5, 18));
-      g.drawLine(startX, startY, x, y);
+      playerG.setColor(new Color(51, 5, 18));
+      playerG.drawLine(startX, startY, x, y);
+      
+      //write dir at top of screen
+      playerG.setColor(Color.BLACK);
+      playerG.fillRect(0, 0, 400, 45);
+      playerG.setColor(Color.GREEN);
+      playerG.setFont(new Font("Arial", Font.BOLD, 20));
+      playerG.drawString("DIR: " + save.getPlayer().getDir(), 15, 30);
       
    }
    public void start(){
       save.start();
+   }
+   public void stopTurn(){
+      save.getPlayer().stopTurn();
    }
    public void save(String filename){
       try {

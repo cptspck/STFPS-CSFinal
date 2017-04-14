@@ -5,6 +5,7 @@ public class Enemy extends Entity {
    private HashMap<Entity, Integer> enemies;
    private Entity target;
    private double FOV;
+   private boolean canShoot;
    public Enemy(double x, double y, double health, double dir, double fov, Weapon w, Path p, int faction, Enemy[] others){
       super(x, y, health, dir, w, faction);
       path = p;
@@ -35,6 +36,15 @@ public class Enemy extends Entity {
       double rightBound = myDir + (FOV/2);
       return leftBound <= angle && angle <= rightBound;
    }
+   public void shot(Weapon w, double distance){
+      if(canShoot){
+         double damage = w.getDamage(distance);
+         myHealth -= damage;
+         System.out.println("OW! \t\t|\tHealth: " + myHealth + "\t\t|Damage: " + damage + "\tAt range: " + distance);
+      } else {
+         System.out.println("miss");
+      }
+   }
    public void step(){
       for(Entity key: enemies.keySet()){
          if(Faction.areEnemies(key, this) && canSee(key) && !triggered){
@@ -48,6 +58,9 @@ public class Enemy extends Entity {
       } else {
          path.move(this);
       }
+   }
+   public void setShootability(boolean shootability){
+      canShoot = shootability;
    }
    public double getFOV(){
       return FOV;

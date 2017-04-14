@@ -8,13 +8,19 @@ import java.util.*;
 public class Player extends Entity {
    private double dX, dY, dR, speed;  //change in x, change in y, change in direction, max speed
    private double FOV = Math.PI / 2;
+   private double[] distances;
    private Map m;
    public Player(double x, double y, double health, double dir, Weapon w, double s, Map map){
       super(x, y, health, dir, w, Faction.STARFLEET);
       speed = s;
       m = map;
+      distances = new double[800];
+   }
+   public double getFOV(){
+      return FOV;
    }
    protected void step(){
+   //check for collisions with map
       if(m.isClear((int)(myX + dX), (int)(myY + dY))){
          myX += dX;
          myY += dY;
@@ -25,10 +31,15 @@ public class Player extends Entity {
             myY += dY;
          }
       }
+      //never turn back!!
       myDir += dR;
-      while(myDir <= 0){
-         myDir += 2 * Math.PI;
+      if(myDir <= 0){
+         myDir = 0;
       }
+      if(myDir >= Math.PI){
+         myDir = Math.PI;
+      }
+      //stay in bounds
       if(myX <= 0.01)
          myX = 0.01;
       if(myY <= 0.01)
@@ -42,6 +53,9 @@ public class Player extends Entity {
    public void stopMovement(){
       dX = 0;
       dY = 0;
+      dR = 0;
+   }
+   public void stopTurn(){
       dR = 0;
    }
    public void forward(){
@@ -62,11 +76,14 @@ public class Player extends Entity {
       dX = Math.sin(myDir - (Math.PI / 2)) * speed;
       dY = Math.cos(myDir - (Math.PI / 2)) * speed;
    }
-   public void tl(){
-      dR = (speed / 4);
+   public void tl(double amount){
+      dR = (speed / 4) * amount;
    }
-   public void tr(){
-      dR = -1 * (speed / 4);
+   public void tr(double amount){
+      dR = -1 * (speed / 4) * amount;
+   }
+   public double getDist(int loc){
+      return distances[loc];
    }
    public void newRender(Graphics g){
       //draw ceiling/sky box
@@ -79,8 +96,8 @@ public class Player extends Entity {
       
       //draw walls
       double planeX = 0;
-      double planeY = 0.66;
-         for(int x = 0; x <= 800; x ++){
+      double planeY = 1;
+         for(int x = 0; x < 800; x ++){
             //calculate ray position and direction
             double cameraX = 2 * (x - 0) / 800.0 - 1; //x-coordinate in camera space
             double rayPosX = myX;
@@ -141,10 +158,15 @@ public class Player extends Entity {
                
             }
             
+            
             if(side == 0){ perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;}
             else if(side == 1){ perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;}
             
-            int lineHeight = (int)(800 / perpWallDist);
+            
+            //store the distance
+            distances[x] = perpWallDist;
+            
+            int lineHeight = (int)(450 / perpWallDist);
             
             g.setColor(m.getColor(mapX, mapY));
             g.drawLine(x, 225 - lineHeight / 2, x, 225 + lineHeight / 2);

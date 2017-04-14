@@ -99,12 +99,18 @@ public class Loader{
       public void mouseEntered(MouseEvent e){}
    }
    private static void chooseFile(){
-   //paint over previos error message
+   //paint over previous error message
       g.setColor(Color.BLACK);
       g.fillRect(150, 170, 500, 25);
       p.repaint();
       //take input and open the files
       String filename = input.toLowerCase();
+      if(filename.equals("start")){
+         p.playIntro();
+         //delete the listeners, not needed anymore
+         p.removeKeyListener(key);
+         p.removeMouseListener(mouse);
+      }
       
       try {
          save = new Save(new Scanner(new File("save/" + filename + ".save")));
