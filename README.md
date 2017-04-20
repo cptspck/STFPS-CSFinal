@@ -1,4 +1,4 @@
-# STFPS-CSFinal
+# Battle of Dorvan V
 A Star Trek 3D FPS written in Java for foundations CompSci
 No game engines or frameworks are used, all rendering is from scratch using raycasting.
 
