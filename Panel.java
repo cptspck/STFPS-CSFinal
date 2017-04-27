@@ -107,7 +107,7 @@ public class Panel extends JPanel {
       waiting = true;
       key = new Key();
       addKeyListener(key);
-      Panel panel = this;
+      final Panel panel = this;
       new Thread(new Runnable() {
          public void run(){
             Intro.playIntro(bgBuffer, panel, "text.png");
