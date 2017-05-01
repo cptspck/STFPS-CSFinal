@@ -19,7 +19,9 @@ public class Loader{
    private static Graphics g;
    private static Panel p;
    public static void load_init(Graphics graphics, Panel panel) {
-      //make these variables global for the listener to use them
+      //make these variables global for the listener to use them      
+      input = "START";
+      
       key = new Key();
       mouse = new Mouse();
       g = graphics;
@@ -40,13 +42,11 @@ public class Loader{
       g.setFont(new Font("Arial", Font.BOLD, 40));
       g.drawString("PLAY", 350, 300);
       g.setFont(new Font("Monospace", Font.BOLD, 35));
-      g.drawString(" |", 200, 400);
+      g.drawString(input + " |", 200, 400);
       
       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
       widthReal = screenSize.getWidth();
       heightReal = screenSize.getHeight();
-      
-      input = "";
       
       p.addKeyListener(key);
       p.addMouseListener(mouse);
@@ -86,7 +86,7 @@ public class Loader{
    }
    private static class Mouse implements MouseListener{
       public void mouseReleased(MouseEvent e){
-         System.out.println("X: " + e.getX() + "\t\t|\tY: " + e.getY());
+         //System.out.println("X: " + e.getX() + "\t\t|\tY: " + e.getY());
          if(((e.getX() / widthReal) <= 0.625) && ((e.getX() / widthReal) >= 0.375)){
             if(((e.getY() / heightReal) <= 0.711) && ((e.getY() / heightReal) >= 0.555)){
                chooseFile();
