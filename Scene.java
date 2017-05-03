@@ -40,7 +40,7 @@ public class Scene {
    }
    public void render(Graphics bg, Graphics enemyG, Graphics playerG){
    //draw building
-      save.render(bg, npc);
+      save.render(bg);
    //draw NPCs
       npc.render(enemyG, save.getPlayer());
    
