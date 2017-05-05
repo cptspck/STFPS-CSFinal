@@ -2,7 +2,7 @@ import java.util.*;
 public class Enemy extends Entity {
    private Path path;
    private boolean triggered;
-   private HashMap<Entity, Integer> enemies;
+   private boolean alive;
    private Entity target;
    private double FOV;
    private boolean canShoot;
@@ -10,11 +10,11 @@ public class Enemy extends Entity {
       super(x, y, health, dir, w, faction);
       path = p;
       triggered = false;
+      alive = true;
       FOV = fov;
-      enemies = new HashMap<Entity, Integer>();
-      for(int i = 0; i < others.length; i ++){
-         
-      }
+   }
+   public boolean isAlive(){
+      return alive;
    }
    public boolean canSee(Entity e){
       double angle = Math.atan((e.getX() - getX())/(e.getY() - getY()));
@@ -40,18 +40,16 @@ public class Enemy extends Entity {
       if(canShoot){
          double damage = w.getDamage(distance);
          myHealth -= damage;
-         System.out.println("OW! \t\t|\tHealth: " + myHealth + "\t\t|Damage: " + damage + "\tAt range: " + distance);
-      } else {
-         System.out.println("miss");
+      }
+      if(myHealth <= 0){
+         alive = false;
       }
    }
+   public void trigger(Entity e){
+      target = e;
+      triggered = true;
+   }
    public void step(){
-      for(Entity key: enemies.keySet()){
-         if(Faction.areEnemies(key, this) && canSee(key) && !triggered){
-            triggered = true;
-            target = key;
-         }
-      }
       //if you have been triggered, look at the triggered individual
       if(triggered && canSee(target)){
          setDir(Math.atan((target.getX() - getX())/(target.getY() - getY())));

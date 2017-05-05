@@ -35,6 +35,7 @@ public class Panel extends JPanel {
    
    protected boolean waiting = false;
     
+   private int playerShooting = 0;
    public Panel(int w, int h){      
       width = w;
       height = h;
@@ -91,7 +92,10 @@ public class Panel extends JPanel {
                playerBuffer.setColor(new Color(50, 0, 80, 255));
                playerBuffer.fillRect(350, 223, 100, 4);
                playerBuffer.fillRect(398, 175, 4, 100);
-               
+               if(playerShooting > 0){
+                  playerShooting --;
+                  scene.getSave().shoot(playerBuffer);
+               }
                scene.render(bgBuffer, enemyBuffer, playerBuffer);
                repaint();
                try {
@@ -206,6 +210,7 @@ public class Panel extends JPanel {
       public void mouseClicked(MouseEvent e){
          if(scene != null){
             scene.shoot(playerBuffer);
+            playerShooting += 50;
          }
       }
       public void mouseExited(MouseEvent e){}

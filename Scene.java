@@ -16,6 +16,9 @@ public class Scene {
    public void forward(){
       save.getPlayer().forward();
    }
+   public Save getSave(){
+      return save;
+   }
    public void left(){
       save.getPlayer().left();
    }

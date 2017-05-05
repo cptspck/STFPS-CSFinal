@@ -14,8 +14,10 @@ NPC FILE FORMAT:
 public class NPC{
    private Enemy[] npc;
    private double[] dists;
+   private Thread[] threads;
    public NPC(Scanner in){
       npc = new Enemy[in.nextInt()];
+      threads = new Thread[npc.length];
       for(int i = 0; i < npc.length; i ++){
          double x = in.nextDouble();
          double y = in.nextDouble();
@@ -40,7 +42,8 @@ public class NPC{
             return;
          }
          npc[i] = new Enemy(x, y, h, d, f, w, p, faction, npc);
-         new Thread(npc[i]).start();
+         threads[i] = new Thread(npc[i]);
+         threads[i].start();
       }
       dists = new double[npc.length];
    }
@@ -62,7 +65,18 @@ public class NPC{
          npc[i].shot(w, dists[i]);
       }
    }
+   //handle background stuff
+   private void manage(){
+      for(int i = 0; i < npc.length; i++){
+         if(!npc[i].isAlive()){
+            threads[i].stop();
+         }
+      }
+   }
    public void render(Graphics g, Player player){
+      //housekeeping
+      manage();
+      
       //get info about the player
       double x = player.getX();
       double y = player.getY();

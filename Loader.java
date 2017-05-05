@@ -62,7 +62,7 @@ public class Loader{
          if(val >= 65 && val <= 90){
          //if it is an alpha character, append it to the input string
             input += str;
-         } else if(val == 8){
+         } else if(val == 8 && input.length() > 0){
          //if its the backspace key, remove last character from input string
             input = input.substring(0, input.length() - 1);
          }
