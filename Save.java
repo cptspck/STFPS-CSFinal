@@ -59,12 +59,22 @@ public class Save {
       thread.start();
       System.out.println("player thread started");
    }
-   public void shoot(Graphics g){
+   public void shoot(Graphics g, int offset){
+      int startX = ((offset * 230) / 15) + 400;
+      int startY = ((offset * 75) / 15) + 225;
+      int endX = (((offset - 5) * 230) / 15) + 400;
+      int endY = (((offset - 5) * 75) / 15) + 225;
+      
+      startX = (startX >= 630) ? 630 : startX;
+      startY = (startY >= 330) ? 330 : startY;
+      endX = (endX <= 400) ? 400 : endX;
+      endY = (endY <= 225) ? 225 : endY;
+      
       g.setColor(new Color(119, 231, 239));
-      g.drawLine(400, 225, 630, 330);
+      g.drawLine(startX, startY, endX, endY);
    }
    public void save(Writer out) throws Exception{
-   //make a sring to save
+   //make a string to save
       String output = "";
       output += x + " ";
       output += y + " ";

@@ -27,7 +27,6 @@ public class Scene {
    }
    public void shoot(Graphics g){
       npc.shoot(save.getPlayer().getWeapon());
-      save.shoot(g);
    }
    public void back(){
       save.getPlayer().back();

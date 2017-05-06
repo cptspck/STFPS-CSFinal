@@ -73,7 +73,7 @@ public class Panel extends JPanel {
       animator = new Thread(new Runnable() {
          public void run(){
             while(waiting){}
-               scene.start();
+            scene.start();
             while(true){
                for(int x = 0; x < 800; x ++){
                   for(int y = 0; y < 450; y ++){
@@ -92,9 +92,10 @@ public class Panel extends JPanel {
                playerBuffer.setColor(new Color(50, 0, 80, 255));
                playerBuffer.fillRect(350, 223, 100, 4);
                playerBuffer.fillRect(398, 175, 4, 100);
+               //draw phaser shot
                if(playerShooting > 0){
-                  playerShooting --;
-                  scene.getSave().shoot(playerBuffer);
+                  playerShooting -= 3;
+                  scene.getSave().shoot(playerBuffer, playerShooting);
                }
                scene.render(bgBuffer, enemyBuffer, playerBuffer);
                repaint();
@@ -210,7 +211,7 @@ public class Panel extends JPanel {
       public void mouseClicked(MouseEvent e){
          if(scene != null){
             scene.shoot(playerBuffer);
-            playerShooting += 50;
+            playerShooting = 20;
          }
       }
       public void mouseExited(MouseEvent e){}
