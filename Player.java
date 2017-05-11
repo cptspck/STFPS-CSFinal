@@ -6,7 +6,7 @@ import java.awt.image.*;
 import java.util.*;
 /****************************************
 *Player is the class the the gamer controls.
-*It extends the Entity class, and knows his direction, and speed, as well as any changes in direction or speed.
+*It extends the Entity class, and knows its direction and speed, as well as any changes in direction or speed.
 
 *@Dhanvant, Yash, Keegan
 *@1.0.0
@@ -127,7 +127,7 @@ public class Player extends Entity {
       dY = Math.cos(myDir - (Math.PI / 2)) * speed;
    }
       /****************************************
-*Turns the player Right
+*Turns the player Left
 
 *@param amount The degree at which you are turned right
 *****************************************/
@@ -141,15 +141,6 @@ public class Player extends Entity {
 *****************************************/
    public void tr(double amount){
       dR = -1 * (speed / 4) * amount;
-   }
-      /****************************************
-*Gets the distance between the locations
-
-*@param loc The location you wish to find the distance to
-*@return distance[]
-*****************************************/
-   public double getDist(int loc){
-      return distances[loc];
    }
       /****************************************
 *Renders the graphics of the area that you, the palyer character are in
