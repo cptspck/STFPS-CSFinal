@@ -4,21 +4,48 @@ import java.awt.event.*;
 import java.awt.AlphaComposite;
 import java.awt.image.*;
 import java.util.*;
+/****************************************
+*Player is the class the the gamer controls.
+*It extends the Entity class, and knows his direction, and speed, as well as any changes in direction or speed.
 
+*@Dhanvant, Yash, Keegan
+*@1.0.0
+*****************************************/
 public class Player extends Entity {
    private double dX, dY, dR, speed;  //change in x, change in y, change in direction, max speed
    private double FOV = Math.PI / 2;
    private double[] distances;
    private Map m;
+   /****************************************
+*Creates a player with starting position (x,y), sets its health value, gives it a direction in radians, gives it a weapon
+*and sets a map up, while setting its speed. It also sets up the faction that the player is in, Starfleet.
+
+*@param x X-position
+*@param y Y-position
+*@param health Health
+*@param dir Direction
+*@param w Weapon
+*@param s Speed
+*@param map Map
+*****************************************/
    public Player(double x, double y, double health, double dir, Weapon w, double s, Map map){
       super(x, y, health, dir, w, Faction.STARFLEET);
       speed = s;
       m = map;
       distances = new double[800];
    }
+   /****************************************
+*Returns the players Field of View
+
+*@return FOV
+*****************************************/
    public double getFOV(){
       return FOV;
    }
+   /****************************************
+*Checks to ensure that the player character isn't moving into any walls.
+
+*****************************************/
    protected void step(){
    //check for collisions with map
       if(m.isClear((int)(myX + dX), (int)(myY + dY))){
@@ -50,41 +77,85 @@ public class Player extends Entity {
          myX = m.getWidth() - 0.01;
          
    }
+      /****************************************
+*Stops all player movement
+
+*****************************************/
    public void stopMovement(){
       dX = 0;
       dY = 0;
       dR = 0;
    }
+      /****************************************
+*Stops the player from turning
+*****************************************/
    public void stopTurn(){
       dR = 0;
    }
+      /****************************************
+*Moves the player forward
+
+*****************************************/
    public void forward(){
       
       dX = Math.sin(myDir) * speed;
       dY = Math.cos(myDir) * speed;
    }
+      /****************************************
+*Moves the player Back
+
+*****************************************/
    public void back(){
    
       dX = -1 * (Math.sin(myDir) * speed);
       dY = -1 * (Math.cos(myDir) * speed);
    }
+      /****************************************
+ *Moves the player left
+
+*****************************************/
    public void left(){
       dX = Math.sin(myDir + (Math.PI / 2)) * speed;
       dY = Math.cos(myDir + (Math.PI / 2)) * speed;
    }
+      /****************************************
+*Moves the player right
+
+*****************************************/
    public void right(){
       dX = Math.sin(myDir - (Math.PI / 2)) * speed;
       dY = Math.cos(myDir - (Math.PI / 2)) * speed;
    }
+      /****************************************
+*Turns the player Right
+
+*@param amount The degree at which you are turned right
+*****************************************/
    public void tl(double amount){
       dR = (speed / 4) * amount;
    }
+      /****************************************
+*Turns the player Right
+
+*@param amount The degree to which the player is turned
+*****************************************/
    public void tr(double amount){
       dR = -1 * (speed / 4) * amount;
    }
+      /****************************************
+*Gets the distance between the locations
+
+*@param loc The location you wish to find the distance to
+*@return distance[]
+*****************************************/
    public double getDist(int loc){
       return distances[loc];
    }
+      /****************************************
+*Renders the graphics of the area that you, the palyer character are in
+
+*@param g Graphics of Map
+*****************************************/
    public void newRender(Graphics g){
       //draw ceiling/sky box
       g.setColor(Color.WHITE.darker());
