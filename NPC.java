@@ -82,11 +82,11 @@ public class NPC{
       double y = player.getY();
       double dir = player.getDir();
       
-      double dirX = Math.sin(dir);
-      double dirY = Math.cos(dir);
+      double dirX = player.getDirX();
+      double dirY = player.getDirY();
       
-      double planeX = 0;
-      double planeY = 1;
+      double planeX = player.getPlaneX();
+      double planeY = player.getPlaneY();
       
       double FOV = player.getFOV();
       //iterate through each npc and see if player can see them

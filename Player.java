@@ -161,6 +161,19 @@ public class Player extends Entity {
    public double getDist(int loc){
       return distances[loc];
    }
+   
+   public double getDirX(){
+      return dirX;
+   }
+   public double getDirY(){
+      return dirY;
+   }
+   public double getPlaneX(){
+      return planeX;
+   }
+   public double getPlaneY(){
+      return planeY;
+   }
       /****************************************
 *Renders the graphics of the area that you, the palyer character are in
 
