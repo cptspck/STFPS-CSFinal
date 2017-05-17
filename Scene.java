@@ -3,21 +3,50 @@ import java.awt.*;
 import java.awt.AlphaComposite;
 import java.awt.image.*;
 import java.io.*;
-
+import java.util.*;
+/*
+   *.sc files format:
+<.map file name>
+<.save file name>
+<.npc file name>
+<next .sc file name>
+*/
 public class Scene {
    private Save save;
    private Map map;
    private NPC npc;
-   public Scene(Save s, NPC n){
-      save = s;
-      npc = n;
-      map = save.getMap();
+   public Scene(Scanner in){
+      try{
+         map = new Map(new Scanner( new File("map/" + in.next() + ".map")));
+      }catch(FileNotFoundException e){
+         System.out.println("Scene has bad Map");
+         System.exit(0);
+         return;
+      }
+      try{
+         save = new Save(new Scanner( new File("save/" + in.next() + ".save")), map);
+      }catch(FileNotFoundException e){
+         System.out.println("Scene has bad Save");
+         System.exit(0);
+         return;
+      }
+      try{
+         npc = new NPC(new Scanner( new File("npc/" + in.next() + ".npc")));
+      }catch(FileNotFoundException e){
+         System.out.println("Scene has bad NPC");
+         System.exit(0);
+         return;
+      }
+      
    }
    public void forward(){
       save.getPlayer().forward();
    }
    public Save getSave(){
       return save;
+   }
+   public NPC getNPC(){
+      return npc;
    }
    public void left(){
       save.getPlayer().left();

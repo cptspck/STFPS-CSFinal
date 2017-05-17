@@ -18,16 +18,15 @@ SAVE FILE FORMAT:
 */
 public class Save {
    private double x, y, d, h, s;
-   private String w, m;
+   private String w;
    private Player player;
    private Map map;
    private Thread thread;
-   public Save(Scanner in){
+   public Save(Scanner in, Map m){
       x = in.nextDouble();
       y = in.nextDouble();
       d = in.nextDouble();
       h = in.nextDouble();
-      m = in.next();
       w = in.next();
       s = in.nextDouble();
       
@@ -39,13 +38,7 @@ public class Save {
          System.exit(0);
          return;
       }
-      try{
-         map = new Map(new Scanner(new File("map/" + m + ".map")));
-      } catch(FileNotFoundException e){
-         System.out.println("Player has bad Map");
-         System.exit(0);
-         return;
-      }
+      map = m;
       player = new Player(x, y, h, d, weapon, s, map);
    }
    public Map getMap(){
@@ -80,7 +73,6 @@ public class Save {
       output += y + " ";
       output += d + " ";
       output += h + " ";
-      output += m + " ";
       output += w + " ";
       output += s + " ";
       

@@ -12,7 +12,7 @@ import java.util.*;
 *@1.0.0
 *****************************************/
 public class Player extends Entity {
-   private double dX, dY, dR, speed;  //change in x, change in y, change in direction, max speed
+   private double dX, dY, dR, speed, dirX, dirY, planeX, planeY;  //change in x, change in y, change in direction, max speed
    private double FOV = Math.PI / 2;
    private double[] distances;
    private Map m;
@@ -33,6 +33,10 @@ public class Player extends Entity {
       speed = s;
       m = map;
       distances = new double[800];
+      dirX = Math.sin(myDir);
+      dirY = Math.cos(myDir);
+      planeX = 0;
+      planeY = 1;
    }
    /****************************************
 *Returns the players Field of View
@@ -58,14 +62,21 @@ public class Player extends Entity {
             myY += dY;
          }
       }
-      //never turn back!!
       myDir += dR;
+      double oldDirX = dirX;
+      dirX = dirX * Math.cos(-dR) - dirY * Math.sin(-dR);
+      dirY = oldDirX * Math.sin(-dR) + dirY * Math.cos(-dR);
+      double oldPlaneX = planeX;
+      planeX = planeX * Math.cos(-dR) - planeY * Math.sin(-dR);
+      planeY = oldPlaneX * Math.sin(-dR) + planeY * Math.cos(-dR);
+      //never turn back!!
+      /*
       if(myDir <= 0){
          myDir = 0;
       }
       if(myDir >= Math.PI){
          myDir = Math.PI;
-      }
+      }*/
       //stay in bounds
       if(myX <= 0.01)
          myX = 0.01;
@@ -142,6 +153,14 @@ public class Player extends Entity {
    public void tr(double amount){
       dR = -1 * (speed / 4) * amount;
    }
+/****************************************
+*Gets the distance between the locations
+*@param loc The location you wish to find the distance to
+*@return distance[]
+*****************************************/
+   public double getDist(int loc){
+      return distances[loc];
+   }
       /****************************************
 *Renders the graphics of the area that you, the palyer character are in
 
@@ -157,15 +176,11 @@ public class Player extends Entity {
       g.fillRect(0, 225, 800, 225);
       
       //draw walls
-      double planeX = 0;
-      double planeY = 1;
          for(int x = 0; x < 800; x ++){
             //calculate ray position and direction
             double cameraX = 2 * (x - 0) / 800.0 - 1; //x-coordinate in camera space
             double rayPosX = myX;
             double rayPosY = myY;
-            double dirX = Math.sin(myDir);
-            double dirY = Math.cos(myDir);
             double rayDirX = dirX + planeX * cameraX;
             double rayDirY = dirY + planeY * cameraX;
             

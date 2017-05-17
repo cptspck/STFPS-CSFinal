@@ -111,10 +111,8 @@ public class Loader{
          p.removeKeyListener(key);
          p.removeMouseListener(mouse);
       }
-      
       try {
-         save = new Save(new Scanner(new File("save/" + filename + ".save")));
-         npc = new NPC(new Scanner(new File("npc/" + filename + ".npc")));
+         scene = new Scene(new Scanner(new File("scene/" + filename + ".sc")));
       } catch(FileNotFoundException e){
       //tell the user that the file wasn't found
          g.setColor(Color.RED);
@@ -124,13 +122,13 @@ public class Loader{
          p.repaint();
          return;
       }
+      save = scene.getSave();
+      npc = scene.getNPC();
       //give the user some feedback that things are working
       g.setColor(Color.GREEN);
       g.setFont(new Font("Arial", Font.BOLD, 18));
       g.drawString("Success! Loading...", 150, 190);
       p.repaint();
-      //make the scene object
-      scene = new Scene(save, npc);
       //delete the listeners, not needed anymore
       p.removeKeyListener(key);
       p.removeMouseListener(mouse);
