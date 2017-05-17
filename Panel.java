@@ -94,7 +94,7 @@ public class Panel extends JPanel {
                playerBuffer.fillRect(398, 175, 4, 100);
                //draw phaser shot
                if(playerShooting > 0){
-                  playerShooting -= 3;
+                  playerShooting -= 5;
                   scene.getSave().shoot(playerBuffer, playerShooting);
                }
                scene.render(bgBuffer, enemyBuffer, playerBuffer);
@@ -209,7 +209,7 @@ public class Panel extends JPanel {
    }
    private class MouseClick implements MouseListener{
       public void mouseClicked(MouseEvent e){
-         if(scene != null){
+         if(scene != null && playerShooting <= 0){
             scene.shoot(playerBuffer);
             playerShooting = 20;
          }
