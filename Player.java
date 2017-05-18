@@ -69,14 +69,12 @@ public class Player extends Entity {
       double oldPlaneX = planeX;
       planeX = planeX * Math.cos(-dR) - planeY * Math.sin(-dR);
       planeY = oldPlaneX * Math.sin(-dR) + planeY * Math.cos(-dR);
-      //never turn back!!
-      /*
-      if(myDir <= 0){
-         myDir = 0;
+      while(myDir >= (2*Math.PI)){
+         myDir -= (2*Math.PI);
       }
-      if(myDir >= Math.PI){
-         myDir = Math.PI;
-      }*/
+      while(myDir <= 0){
+         myDir += (2*Math.PI);
+      }
       //stay in bounds
       if(myX <= 0.01)
          myX = 0.01;

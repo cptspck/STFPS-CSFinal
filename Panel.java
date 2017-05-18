@@ -113,73 +113,7 @@ public class Panel extends JPanel {
       key = new Key();
       addKeyListener(key);
       final Panel panel = this;
-      new Thread(new Runnable() {
-         public void run(){
-            Intro.playIntro(bgBuffer, panel, "text.png");
-            try{
-               Thread.sleep(5000);
-            } catch(Exception e){}
-            Intro.playIntro(bgBuffer, panel, "rock.png");
-            waiting = false;
-         }
-      }).start();
-      new Thread(new Runnable() {
-         public void run(){
-            playerBuffer.drawImage(new ImageIcon("images/defiant.png").getImage(), 300, 275, 200, 150, null);
-            
-            playerBuffer.setColor(Color.WHITE);
-            playerBuffer.setFont(new Font("Arial", Font.ITALIC, 18));
-            playerBuffer.drawString("Welcome, Commander, to the Defiant.  We will arrive at Dorvan V shortly.", 5, 40);
-            panel.repaint();
-            try{
-               Thread.sleep(5000);
-            } catch(Exception e){}
-            for(int x = 0; x < 800; x ++){
-               for(int y = 0; y <= 50; y ++){
-                  playerImage.setRGB(x, y, 0);
-               }
-            }
-            playerBuffer.drawString("Once we get there, your mission will be to infiltrate the Marquis", 5, 40);
-            playerBuffer.drawString("compound under cover of a Cardassian attack.", 5, 60);
-            
-            panel.repaint();
-            try{
-               Thread.sleep(6000);
-            } catch(Exception e){}
-            for(int x = 0; x < 800; x ++){
-               for(int y = 0; y <= 80; y ++){
-                  playerImage.setRGB(x, y, 0);
-               }
-            }
-            playerBuffer.drawString("Your target is Jecto Dulbisi. Mr. Jecto is the leader of the Marquis.", 5, 40);
-            playerBuffer.drawString("Take him out, and the Andorian ambassador Ithisil Ch'ravak,", 5, 60);
-            playerBuffer.drawString("who has infiltrated the Marquis, can take over.", 5, 80);
-            panel.repaint();
-            try{
-               Thread.sleep(10000);
-            } catch(Exception e){}
-            for(int x = 0; x < 800; x ++){
-               for(int y = 0; y <= 140; y ++){
-                  playerImage.setRGB(x, y, 0);
-               }
-            }
-            panel.repaint();
-            try{
-               Thread.sleep(3000);
-            } catch(Exception e){}
-            playerBuffer.drawString("We have arrived, Commander. We can't beam you down, as that would leave", 5, 40);
-            playerBuffer.drawString("a Starfleet transporter trace. Instead, you will take a shuttlecraft.", 5, 60);
-            try{
-               Thread.sleep(8000);
-            } catch(Exception e){}
-            for(int x = 0; x < 800; x ++){
-               for(int y = 0; y < 450; y ++){
-                  playerImage.setRGB(x, y, 0);
-               }
-            }
-            playerBuffer.drawImage(new ImageIcon("images/shuttle.png").getImage(), 300, 325, 200, 100, null);
-         }
-      }).start();
+      waiting = false;
    }
    private class Key implements KeyListener {
       public void keyPressed(KeyEvent e){
