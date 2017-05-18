@@ -1,5 +1,10 @@
 import java.util.*;
+import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.image.*;
+import java.io.*;
 /*
 FORMAT FOR MAP FILES:
 <width> <height>
@@ -38,6 +43,8 @@ public class Map {
    private int width;
    private int height;
    private int[][] matrix;
+   private int [][][] textures;
+   private int texWidth, texHeight;
    public Map(Scanner in){
       width = in.nextInt();
       height = in.nextInt();
@@ -48,6 +55,20 @@ public class Map {
             matrix[x][y] = in.nextInt();
          }
       }
+      loadTextures();
+      texWidth = texHeight = 64;
+   }
+   private void loadTextures(){
+      textures = new int[10][64][64];
+      textures[1] = createTextureArray("GrassTexture.jpg");
+      textures[2] = createTextureArray("RedTexture.jpg");
+      textures[3] = createTextureArray("GrassTexture.jpg");
+      textures[4] = createTextureArray("GrassTexture.jpg");
+      textures[5] = createTextureArray("GrassTexture.jpg");
+      textures[6] = createTextureArray("GrassTexture.jpg");
+      textures[7] = createTextureArray("GrassTexture.jpg");
+      textures[8] = createTextureArray("GrassTexture.jpg");
+      textures[9] = createTextureArray("GrassTexture.jpg");
    }
    private int getVal(int x, int y){
       if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
@@ -100,5 +121,38 @@ public class Map {
             
       }
       return new Color(120, 120, 120, 120);
+   }
+   public int getTexWidth(){
+      return texWidth;
+   }
+   private int[][] createTextureArray(String filename){
+      BufferedImage image;
+      try{
+         image = ImageIO.read(new File("images/" + filename));
+      } catch(Exception e){
+         System.out.println("cant open image " + filename);
+         return new int[0][0];
+      }
+      final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+      final int width = image.getWidth();
+      final int height = image.getHeight();
+      final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+
+      int[][] result = new int[height][width];
+      final int pixelLength = 3;
+      for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+         int argb = 0;
+         //argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+         argb += ((int) pixels[pixel + 0] & 0xff); // blue
+         argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+         argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+         result[row][col] = argb;
+         col++;
+         if (col == width) {
+            col = 0;
+            row++;
+         }
+      }
+      return result;
    }
 }
