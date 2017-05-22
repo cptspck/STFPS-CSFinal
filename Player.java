@@ -256,6 +256,28 @@ public class Player extends Entity {
             
             int lineHeight = (int)(450 / perpWallDist);
             
+            int drawStart = ((-1*lineHeight) / 2) + 225;
+            if(drawStart < 0){
+               drawStart = 0;
+            }
+            int drawEnd = ((-1*lineHeight) / 2) + 225;
+            if(drawEnd < 0){
+               drawEnd = 0;
+            }
+            
+            double wallX;
+            if(side == 0){wallX = rayPosY + (perpWallDist * rayDirY);}
+            else {wallX = rayPosX + (perpWallDist * rayDirX);}
+            
+            wallX -= (int)wallX;
+               
+            int texWidth = m.getTexWidth();
+               
+            int texX = (int)(wallX * (double)texWidth);
+            if(side == 0 && rayDirX > 0){texX = texWidth - texX - 1;}
+            if(side == 1 && rayDirY < 0){texX = texWidth - texX - 1;}
+            
+            
             g.setColor(m.getColor(mapX, mapY));
             g.drawLine(x, 225 - lineHeight / 2, x, 225 + lineHeight / 2);
             
