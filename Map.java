@@ -62,13 +62,13 @@ public class Map {
       textures = new int[10][64][64];
       textures[1] = createTextureArray("GrassTexture.jpg");
       textures[2] = createTextureArray("RedTexture.jpg");
-      textures[3] = createTextureArray("GrassTexture.jpg");
-      textures[4] = createTextureArray("GrassTexture.jpg");
-      textures[5] = createTextureArray("GrassTexture.jpg");
-      textures[6] = createTextureArray("GrassTexture.jpg");
-      textures[7] = createTextureArray("GrassTexture.jpg");
-      textures[8] = createTextureArray("GrassTexture.jpg");
-      textures[9] = createTextureArray("GrassTexture.jpg");
+      textures[3] = createTextureArray("BlueTexture.jpg");
+      textures[4] = createTextureArray("MultiTexture.jpg");
+      textures[5] = createTextureArray("RainbowTexture.jpg");
+      textures[6] = createTextureArray("BrickTexture.jpg");
+      textures[7] = createTextureArray("FractalTexture.jpg");
+      textures[8] = createTextureArray("SpaceTexture.jpg");
+      textures[9] = createTextureArray("PrisonTexture.jpg");
    }
    private int getVal(int x, int y){
       if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
