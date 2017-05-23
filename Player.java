@@ -272,15 +272,25 @@ public class Player extends Entity {
             wallX -= (int)wallX;
                
             int texWidth = m.getTexWidth();
-               
+      
             int texX = (int)(wallX * (double)texWidth);
             if(side == 0 && rayDirX > 0){texX = texWidth - texX - 1;}
             if(side == 1 && rayDirY < 0){texX = texWidth - texX - 1;}
             
-            
+            for(int y = drawStart; y<drawEnd; y++)
+            {
+               int d = y * 256 - 400 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
+               int texY = ((d * m.getTexHeight()) / lineHeight) / 256;
+               int color = m.getPixel(mapX, mapY, texX, texY);
+               //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
+               if(side == 1) color = (color >> 1) & 8355711;
+               g.setColor(new Color(color));
+               g.drawLine(x, y, x, y);
+            }
+            /*
             g.setColor(m.getColor(mapX, mapY));
             g.drawLine(x, 225 - lineHeight / 2, x, 225 + lineHeight / 2);
-            
+            */
          }
    }
 }

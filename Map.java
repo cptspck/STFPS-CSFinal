@@ -65,10 +65,19 @@ public class Map {
       textures[3] = createTextureArray("BlueTexture.jpg");
       textures[4] = createTextureArray("MultiTexture.jpg");
       textures[5] = createTextureArray("RainbowTexture.jpg");
-      textures[6] = createTextureArray("BrickTexture.jpg");
+      textures[6] = createTextureArray("BrickTextures.jpg");
       textures[7] = createTextureArray("FractalTexture.jpg");
       textures[8] = createTextureArray("SpaceTexture.jpg");
       textures[9] = createTextureArray("PrisonTexture.jpg");
+   }
+   public int getPixel(int mapX, int mapY, int x, int y){
+      return textures[matrix[mapX][mapY]][x][y];
+   }
+   public int getTexWidth(){
+      return texWidth;
+   }
+   public int getTexHeight(){
+      return texHeight;
    }
    private int getVal(int x, int y){
       if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
@@ -121,9 +130,6 @@ public class Map {
             
       }
       return new Color(120, 120, 120, 120);
-   }
-   public int getTexWidth(){
-      return texWidth;
    }
    private int[][] createTextureArray(String filename){
       BufferedImage image;
