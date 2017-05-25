@@ -90,6 +90,18 @@ public class Map {
       if(x < 0 || x > textures[c].length || y < 0 || y > textures[c][x].length){
          return 0;
       }
+      if(x >= getTexWidth()){
+         x = getTexWidth() - 1;
+      }
+      if(y >= getTexHeight()){
+         y = getTexHeight() - 1;
+      }
+      if(y < 0){
+         y = 0;
+      }
+      if(x < 0){
+         x = 0;
+      }
       return textures[c][x][y];
    }
    public int getTexWidth(){

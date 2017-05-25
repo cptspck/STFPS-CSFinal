@@ -54,6 +54,18 @@ public class Scene {
    public void right(){
       save.getPlayer().right();
    }
+   public void stopForward(){
+      save.getPlayer().stopForward();
+   }
+   public void stopBack(){
+      save.getPlayer().stopBack();
+   }
+   public void stopLeft(){
+      save.getPlayer().stopLeft();
+   }
+   public void stopRight(){
+      save.getPlayer().stopRight();
+   }
    public void shoot(Graphics g){
       npc.shoot(save.getPlayer().getWeapon());
    }

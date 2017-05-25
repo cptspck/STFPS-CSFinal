@@ -136,8 +136,20 @@ public class Panel extends JPanel {
          }
       }
       public void keyReleased(KeyEvent e){
-         if(scene != null)
-            scene.stopMovement();
+         if(scene != null){         
+            if(e.getKeyCode() == KeyEvent.VK_W){
+               scene.stopForward();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_A){
+               scene.stopLeft();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_S){
+               scene.stopBack();
+            }         
+            if(e.getKeyCode() == KeyEvent.VK_D){
+               scene.stopRight();
+            }
+         }
       }
       public void keyTyped(KeyEvent e){}
    }

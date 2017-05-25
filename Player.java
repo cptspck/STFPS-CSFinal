@@ -12,7 +12,7 @@ import java.util.*;
 *@1.0.0
 *****************************************/
 public class Player extends Entity {
-   private double dX, dY, dR, speed, dirX, dirY, planeX, planeY;  //change in x, change in y, change in direction, max speed
+   private double dX, dY, dR, dX2, dY2, speed, dirX, dirY, planeX, planeY;  //change in x, change in y, change in direction, max speed
    private double FOV = Math.PI / 2;
    private double[] distances;
    private Map m;
@@ -52,14 +52,18 @@ public class Player extends Entity {
 *****************************************/
    protected void step(){
    //check for collisions with map
-      if(m.isClear((int)(myX + dX), (int)(myY + dY))){
+      if(m.isClear((int)(myX + dX + dX2), (int)(myY + dY + dY2))){
          myX += dX;
+         myX += dX2;
          myY += dY;
+         myY += dY2;
       } else {
-         if(m.isClear((int)(myX + dX), (int)myY)){
+         if(m.isClear((int)(myX + dX + dX2), (int)myY)){
             myX += dX;
-         } else if(m.isClear((int)myX, (int)(myY + dY))){
+            myX += dX2;
+         } else if(m.isClear((int)myX, (int)(myY + dY + dY2))){
             myY += dY;
+            myY += dY2;
          }
       }
       myDir += dR;
@@ -110,6 +114,10 @@ public class Player extends Entity {
       dX = Math.sin(myDir) * speed;
       dY = Math.cos(myDir) * speed;
    }
+   public void stopForward(){
+      dX  = 0;
+      dY  = 0;
+   }
       /****************************************
 *Moves the player Back
 
@@ -119,21 +127,34 @@ public class Player extends Entity {
       dX = -1 * (Math.sin(myDir) * speed);
       dY = -1 * (Math.cos(myDir) * speed);
    }
+   public void stopBack(){
+   
+      dX = 0;
+      dY = 0;
+   }
       /****************************************
  *Moves the player left
 
 *****************************************/
    public void left(){
-      dX = Math.sin(myDir + (Math.PI / 2)) * speed;
-      dY = Math.cos(myDir + (Math.PI / 2)) * speed;
+      dX2 = Math.sin(myDir + (Math.PI / 2)) * speed;
+      dY2 = Math.cos(myDir + (Math.PI / 2)) * speed;
+   }
+   public void stopLeft(){
+      dX2 = 0;
+      dY2 = 0;
    }
       /****************************************
 *Moves the player right
 
 *****************************************/
    public void right(){
-      dX = Math.sin(myDir - (Math.PI / 2)) * speed;
-      dY = Math.cos(myDir - (Math.PI / 2)) * speed;
+      dX2 = Math.sin(myDir - (Math.PI / 2)) * speed;
+      dY2 = Math.cos(myDir - (Math.PI / 2)) * speed;
+   }
+   public void stopRight(){
+      dX2 = 0;
+      dY2 = 0;
    }
       /****************************************
 *Turns the player Left
@@ -286,21 +307,30 @@ public class Player extends Entity {
             wallX -= (int)wallX;
                
             int texWidth = m.getTexWidth();
-      
+            
             int texX = (int)(wallX * (double)texWidth);
             if(side == 0 && rayDirX > 0){texX = texWidth - texX - 1;}
             if(side == 1 && rayDirY < 0){texX = texWidth - texX - 1;}
             //System.out.println("start: " + drawStart + "\t\t| end: " + drawEnd);
-            for(int y = drawStart; y<drawEnd; y++)
+            for(int y = drawStart; y<drawEnd - 2; y+= 4)
             {
                int d = y * 256 - 450 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
                int texY = ((d * m.getTexHeight()) / lineHeight) / 256;
-               int color = m.getPixel(mapX, mapY, texX, texY);
+               int c1 = m.getPixel(mapX, mapY, texX, texY);
+               int c2 = m.getPixel(mapX, mapY, texX, texY + 1);
+               int c3 = m.getPixel(mapX, mapY, texX, texY + 2);
+               int c4 = m.getPixel(mapX, mapY, texX, texY + 3);
+               
+               int red = (((c1 & 0xff0000) >> 16) + ((c2 & 0xff0000) >> 16) + ((c3 & 0xff0000) >> 16) + ((c4 & 0xff0000) >> 16)) / 4;
+               int green = (((c1 & 0xff00) >> 8) + ((c2 & 0xff00) >> 8) + ((c3 & 0xff00) >> 8) + ((c4 & 0xff00) >> 8)) / 4;
+               int blue = ((c1 & 0xff) + (c2 & 0xff) + (c3 & 0xff) + (c4 & 0xff)) / 4;
+               
+               int color = 0xff000000 + (red << 16) + (green << 8) + blue;
                //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
                if(side == 1) color = (color >> 1) & 8355711;
                g.setColor(new Color(color));
                //System.out.println(color);
-               g.drawLine(x, y, x, y);
+               g.drawLine(x, y-2, x, y+2);
             }
             /*
             g.setColor(m.getColor(mapX, mapY));
