@@ -28,7 +28,10 @@ public class Path{
       for(int i = 0; i < size; i ++){
          xList[i] = in.nextDouble();
          yList[i] = in.nextDouble();
+         
+         System.out.println("X: " + xList[i] + "\t\t|\tY:" + yList[i]);
       }
+      System.out.println();
    }
    public double getSpeed(){
       return speed;
@@ -37,14 +40,8 @@ public class Path{
       e.setDir(Math.atan((xList[cur] - e.getX())/(yList[cur] - e.getY())));
    }
    public void move(Enemy e){
-      if(xList[cur] == e.getX() && e.getY() == yList[cur]){
-         System.out.println("\n\n\n\t\tNEXT!!!!\n");
-         cur++;
-      }
-   
       double prevDistX = xList[cur] - e.getX();
       double prevDistY = yList[cur] - e.getY();
-      
       double newDir = Math.atan2(xList[cur] - e.getX(), yList[cur] - e.getY());
       
       e.setDir(newDir);
@@ -66,6 +63,10 @@ public class Path{
       }
       e.setX(newX);
       e.setY(newY);
+      if(xList[cur] == e.getX() && e.getY() == yList[cur]){
+         //System.out.println("\n\n\n\t\tNEXT!!!!\n");
+         cur++;
+      }
    }
    public String getSave(){
       return filename;

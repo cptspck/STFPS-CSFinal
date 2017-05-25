@@ -128,6 +128,7 @@ public class Scene {
    }
    public void start(){
       save.start();
+      npc.start();
    }
    public void stopTurn(){
       save.getPlayer().stopTurn();

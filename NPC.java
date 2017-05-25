@@ -43,9 +43,20 @@ public class NPC{
          }
          npc[i] = new Enemy(x, y, h, d, f, w, p, faction, npc);
          threads[i] = new Thread(npc[i]);
-         threads[i].start();
       }
       dists = new double[npc.length];
+   }
+   //start all the threads once scene is ready
+   public void start(){
+      for(int i = 0; i < threads.length; i ++){   
+         threads[i].start();
+      }
+   }
+   //stop all threads before moving on to next scene
+   public void stop(){
+      for(int i = 0; i < threads.length; i ++){
+         threads[i].stop();
+      }
    }
    public void save(Writer out) throws Exception{
       String output = "";

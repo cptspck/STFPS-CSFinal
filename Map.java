@@ -55,6 +55,9 @@ public class Map {
             matrix[x][y] = in.nextInt();
          }
       }
+      
+      System.out.println("Width: " + width + "\t\t|\tHeight: " + height);
+      
       loadTextures();
       texWidth = texHeight = 64;
    }
@@ -71,7 +74,23 @@ public class Map {
       textures[9] = createTextureArray("PrisonTexture.jpg");
    }
    public int getPixel(int mapX, int mapY, int x, int y){
-      return textures[matrix[mapX][mapY]][x][y];
+      if(isClear(mapX, mapY)){
+         return 0;
+      }
+      if(mapX < 0 || mapX > matrix.length){
+         System.out.println("X: " + mapX);
+         return 0;
+      }
+      if(mapY < 0 || mapY > matrix[mapX].length){
+         System.out.println("Y: " + mapY);
+         return 0;
+      }
+      int c = getVal(mapX, mapY);
+      c = (c > 10)? c - 10: c;
+      if(x < 0 || x > textures[c].length || y < 0 || y > textures[c][x].length){
+         return 0;
+      }
+      return textures[c][x][y];
    }
    public int getTexWidth(){
       return texWidth;
@@ -80,6 +99,9 @@ public class Map {
       return texHeight;
    }
    private int getVal(int x, int y){
+      if(x == 1337 || y == 1337){
+         return 0;
+      }
       if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
          return 10;
       }

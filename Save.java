@@ -52,6 +52,9 @@ public class Save {
       thread.start();
       System.out.println("player thread started");
    }
+   public void stop(){
+      thread.stop();
+   }
    public void shoot(Graphics g, int offset){
       int startX = ((offset * 230) / 15) + 400;
       int startY = ((offset * 75) / 15) + 225;

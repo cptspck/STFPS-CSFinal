@@ -242,8 +242,16 @@ public class Player extends Entity {
                   side = 1;
                }
                if(m.isVisible(mapX, mapY)){hits = 1;}
-               if(mapX > m.getWidth() || mapY > m.getHeight() || mapY < 0 || mapX < 0){break;}
+               if(mapX >= m.getWidth() || mapY >= m.getHeight() || mapY < 0 || mapX < 0){
+                  mapX = 1337;
+                  mapY = 1337;
+                  break;
+               }
                
+            }
+            if(mapX >= m.getWidth() || mapY >= m.getHeight() || mapY < 0 || mapX < 0){
+               mapX = 1337;
+               mapY = 1337;
             }
             
             
@@ -253,6 +261,9 @@ public class Player extends Entity {
             
             //store the distance
             distances[x] = perpWallDist;
+            if(mapX == 1337 || mapY == 1337){
+               distances[x] = 1337;
+            }
             
             int lineHeight = (int)(450 / perpWallDist);
             
@@ -260,9 +271,12 @@ public class Player extends Entity {
             if(drawStart < 0){
                drawStart = 0;
             }
-            int drawEnd = ((-1*lineHeight) / 2) + 225;
-            if(drawEnd < 0){
-               drawEnd = 0;
+            if(m.isHalf(mapX, mapY)){
+               drawStart = 225;
+            }
+            int drawEnd = (lineHeight / 2) + 225;
+            if(drawEnd > 450){
+               drawEnd = 450;
             }
             
             double wallX;
@@ -276,15 +290,16 @@ public class Player extends Entity {
             int texX = (int)(wallX * (double)texWidth);
             if(side == 0 && rayDirX > 0){texX = texWidth - texX - 1;}
             if(side == 1 && rayDirY < 0){texX = texWidth - texX - 1;}
-            
+            //System.out.println("start: " + drawStart + "\t\t| end: " + drawEnd);
             for(int y = drawStart; y<drawEnd; y++)
             {
-               int d = y * 256 - 400 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
+               int d = y * 256 - 450 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
                int texY = ((d * m.getTexHeight()) / lineHeight) / 256;
                int color = m.getPixel(mapX, mapY, texX, texY);
                //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
                if(side == 1) color = (color >> 1) & 8355711;
                g.setColor(new Color(color));
+               //System.out.println(color);
                g.drawLine(x, y, x, y);
             }
             /*
