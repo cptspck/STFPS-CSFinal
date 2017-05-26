@@ -84,7 +84,7 @@ public class NPC{
          }
       }
    }
-   public void render(Graphics g, Player player){
+   public void render(Graphics g, Player player, int xInc){
       //housekeeping
       manage();
       
@@ -161,7 +161,9 @@ public class NPC{
                   }
                   //for(int ya = drawStartY; ya < drawEndY; ya++){ //for every pixel of the current stripe
                   g.setColor(color);
-                  g.drawLine(stripe, drawStartY, stripe, drawEndY); 
+                  int h = drawEndY - drawStartY;
+                  
+                  g.fillRect(stripe, drawStartY, xInc, h); 
                  
                }
             }

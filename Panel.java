@@ -32,11 +32,16 @@ public class Panel extends JPanel {
    
    //screen dimensions:
    private int widthReal, heightReal;
-   
+   private Robot robot;
    protected boolean waiting = false;
     
    private int playerShooting = 0;
    public Panel(int w, int h){      
+      try{
+         robot = new Robot();
+      } catch(AWTException e){
+         System.exit(1);
+      }
       width = w;
       height = h;
       
@@ -73,6 +78,10 @@ public class Panel extends JPanel {
       animator = new Thread(new Runnable() {
          public void run(){
             while(waiting){}
+            BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0, 0), "blank cursor");
+            
+            setCursor(blankCursor);
             scene.start();
             while(true){
                for(int x = 0; x < 800; x ++){
@@ -168,16 +177,11 @@ public class Panel extends JPanel {
    private class Mouse implements MouseMotionListener{
       public void mouseMoved(MouseEvent e){
          int newX = (e.getX() * width) / widthReal;
-         
+         int change = 400 - newX;
          if(scene != null){
-            if(newX > 450){
-               scene.turnRight((newX - 450) / 50);
-            }else if(newX < 350){
-               scene.turnLeft((350 - newX) / 50);
-            } else {
-               scene.stopTurn();
-            }
+            scene.turnAbs(change/200.0);
          }
+         robot.mouseMove(widthReal / 2, heightReal / 2);
       }
       public void mouseDragged(MouseEvent e){
          mouseMoved(e);

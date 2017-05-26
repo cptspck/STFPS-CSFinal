@@ -16,6 +16,7 @@ public class Player extends Entity {
    private double FOV = Math.PI / 2;
    private double[] distances;
    private Map m;
+   private int yInc, xInc;
    /****************************************
 *Creates a player with starting position (x,y), sets its health value, gives it a direction in radians, gives it a weapon
 *and sets a map up, while setting its speed. It also sets up the faction that the player is in, Starfleet.
@@ -37,6 +38,8 @@ public class Player extends Entity {
       dirY = Math.cos(myDir);
       planeX = 0;
       planeY = 1;
+      yInc = 2;
+      xInc = 2;
    }
    /****************************************
 *Returns the players Field of View
@@ -172,6 +175,22 @@ public class Player extends Entity {
    public void tr(double amount){
       dR = -1 * (speed / 4) * amount;
    }
+   public void turnAbs(double a){
+      myDir += a;
+      double oldDirX = dirX;
+      dirX = dirX * Math.cos(-a) - dirY * Math.sin(-a);
+      dirY = oldDirX * Math.sin(-a) + dirY * Math.cos(-a);
+      double oldPlaneX = planeX;
+      planeX = planeX * Math.cos(-a) - planeY * Math.sin(-a);
+      planeY = oldPlaneX * Math.sin(-a) + planeY * Math.cos(-a);
+      while(myDir >= (2*Math.PI)){
+         myDir -= (2*Math.PI);
+      }
+      while(myDir <= 0){
+         myDir += (2*Math.PI);
+      }
+
+   }
 /****************************************
 *Gets the distance between the locations
 *@param loc The location you wish to find the distance to
@@ -198,7 +217,28 @@ public class Player extends Entity {
 
 *@param g Graphics of Map
 *****************************************/
-   public void newRender(Graphics g){
+   public int newRender(Graphics g, double fps){
+      if(fps > 35){
+         yInc --;
+         xInc --;
+      }
+      if(fps < 20){
+         yInc ++;
+      }
+      if(fps < 10){
+         xInc ++;
+      }
+      if(yInc >= 450){
+         yInc = 449;
+      } else if(yInc <= 1){
+         yInc = 1;
+      }
+      if(xInc >= 800){
+         xInc = 799;
+      } else if(xInc <= 1){
+         xInc = 1;
+      }
+
       //draw ceiling/sky box
       g.setColor(Color.WHITE.darker());
       g.fillRect(0, 0, 800, 225);
@@ -208,7 +248,7 @@ public class Player extends Entity {
       g.fillRect(0, 225, 800, 225);
       
       //draw walls
-         for(int x = 0; x < 800; x ++){
+         for(int x = 0; x < 800; x += xInc){
             //calculate ray position and direction
             double cameraX = 2 * (x - 0) / 800.0 - 1; //x-coordinate in camera space
             double rayPosX = myX;
@@ -312,7 +352,8 @@ public class Player extends Entity {
             if(side == 0 && rayDirX > 0){texX = texWidth - texX - 1;}
             if(side == 1 && rayDirY < 0){texX = texWidth - texX - 1;}
             //System.out.println("start: " + drawStart + "\t\t| end: " + drawEnd);
-            for(int y = drawStart; y<drawEnd - 2; y+= 4)
+            
+            for(int y = drawStart; y < drawEnd; y+= yInc)
             {
                int d = y * 256 - 450 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
                int texY = ((d * m.getTexHeight()) / lineHeight) / 256;
@@ -330,12 +371,13 @@ public class Player extends Entity {
                if(side == 1) color = (color >> 1) & 8355711;
                g.setColor(new Color(color));
                //System.out.println(color);
-               g.drawLine(x, y-2, x, y+2);
+               g.fillRect(x - (xInc / 2), y-(yInc / 2), xInc, yInc);
             }
             /*
             g.setColor(m.getColor(mapX, mapY));
             g.drawLine(x, 225 - lineHeight / 2, x, 225 + lineHeight / 2);
             */
          }
+      return yInc;
    }
 }

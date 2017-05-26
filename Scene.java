@@ -15,6 +15,8 @@ public class Scene {
    private Save save;
    private Map map;
    private NPC npc;
+   private int frames;
+   private double fps, startTime;
    public Scene(Scanner in){
       try{
          map = new Map(new Scanner( new File("map/" + in.next() + ".map")));
@@ -37,7 +39,9 @@ public class Scene {
          System.exit(0);
          return;
       }
-      
+      startTime = System.currentTimeMillis();
+      frames = 0;
+      fps = 0;
    }
    public void forward(){
       save.getPlayer().forward();
@@ -78,14 +82,19 @@ public class Scene {
    public void turnLeft(double arg){
       save.getPlayer().tl(arg);
    }
+   public void turnAbs(double arg){
+      save.getPlayer().turnAbs(arg);
+   }
    public void stopMovement(){
       save.getPlayer().stopMovement();
    }
    public void render(Graphics bg, Graphics enemyG, Graphics playerG){
+   
    //draw building
-      save.render(bg);
+      int yInc = save.render(bg, fps);
+      frames++;
    //draw NPCs
-      npc.render(enemyG, save.getPlayer());
+      npc.render(enemyG, save.getPlayer(), yInc);
    
       playerG.setColor(new Color(255, 153, 0));
       playerG.fillRect(0, 400, 50, 50);
@@ -132,10 +141,17 @@ public class Scene {
       
       //write dir at top of screen
       playerG.setColor(Color.BLACK);
-      playerG.fillRect(0, 0, 400, 45);
+      playerG.fillRect(0, 0, 100, 80);
       playerG.setColor(Color.GREEN);
       playerG.setFont(new Font("Arial", Font.BOLD, 20));
-      playerG.drawString("DIR: " + save.getPlayer().getDir(), 15, 30);
+      fps = frames / ((System.currentTimeMillis() - startTime) / 1000.0);
+      playerG.drawString("FPS: " + (int)fps, 15, 30);
+      playerG.drawString("vRes: " + (450 / yInc), 8, 70);
+      
+      if((System.currentTimeMillis() - startTime) > 1000){
+         frames = 1;
+         startTime = System.currentTimeMillis();
+      }
       
    }
    public void start(){
