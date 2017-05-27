@@ -114,6 +114,17 @@ public class Scene {
             }
          }
       }
+      //draw NPCs on compass
+      playerG.setColor(new Color(255, 80, 10));
+      Enemy[] enemies = npc.getNPCs();
+      for(int i = 0; i < enemies.length; i ++){
+         if(enemies[i].isAlive()){
+            int x = (int)(enemies[i].getX() * w);
+            int y = 400 + (int)(enemies[i].getY() * h);
+            playerG.fillOval(x - 2, y - 2, 4, 4);
+         }
+      }
+      
       //draw the player on compass
       
       int startX = (int)(save.getPlayer().getX() * w);

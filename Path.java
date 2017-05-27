@@ -52,7 +52,7 @@ public class Path{
       double newDistX = xList[cur] - newX;
       double newDistY = yList[cur] - newY;
       
-      if((newDistX * prevDistX) <= 0){
+      if((newDistX * prevDistX) < 0){
          newX = xList[cur];
          newY = yList[cur];
          

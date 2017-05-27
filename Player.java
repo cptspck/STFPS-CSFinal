@@ -228,6 +228,10 @@ public class Player extends Entity {
       if(fps < 10){
          xInc ++;
       }
+      if(yInc > (3 * xInc)){
+         yInc --;
+         xInc ++;
+      }
       if(yInc >= 450){
          yInc = 449;
       } else if(yInc <= 1){
@@ -321,9 +325,13 @@ public class Player extends Entity {
             
             
             //store the distance
-            distances[x] = perpWallDist;
-            if(mapX == 1337 || mapY == 1337){
-               distances[x] = 1337;
+            for(int i = 0; i < xInc; i ++){
+               if((x + i) < 800){
+                  distances[x + i] = perpWallDist;
+                  if(mapX == 1337 || mapY == 1337){
+                     distances[x + i] = 1337;
+                  }
+               }
             }
             
             int lineHeight = (int)(450 / perpWallDist);
@@ -357,7 +365,7 @@ public class Player extends Entity {
             {
                int d = y * 256 - 450 * 128 + lineHeight * 128;  //256 and 128 factors to avoid floats
                int texY = ((d * m.getTexHeight()) / lineHeight) / 256;
-               int c1 = m.getPixel(mapX, mapY, texX, texY);
+               /*int c1 = m.getPixel(mapX, mapY, texX, texY);
                int c2 = m.getPixel(mapX, mapY, texX, texY + 1);
                int c3 = m.getPixel(mapX, mapY, texX, texY + 2);
                int c4 = m.getPixel(mapX, mapY, texX, texY + 3);
@@ -366,7 +374,8 @@ public class Player extends Entity {
                int green = (((c1 & 0xff00) >> 8) + ((c2 & 0xff00) >> 8) + ((c3 & 0xff00) >> 8) + ((c4 & 0xff00) >> 8)) / 4;
                int blue = ((c1 & 0xff) + (c2 & 0xff) + (c3 & 0xff) + (c4 & 0xff)) / 4;
                
-               int color = 0xff000000 + (red << 16) + (green << 8) + blue;
+               int color = 0xff000000 + (red << 16) + (green << 8) + blue;*/
+               int color = m.getPixel(mapX, mapY, texX, texY);
                //make color darker for y-sides: R, G and B byte each divided through two with a "shift" and an "and"
                if(side == 1) color = (color >> 1) & 8355711;
                g.setColor(new Color(color));

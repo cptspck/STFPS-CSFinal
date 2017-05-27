@@ -46,6 +46,9 @@ public class NPC{
       }
       dists = new double[npc.length];
    }
+   public Enemy[] getNPCs(){
+      return npc;
+   }
    //start all the threads once scene is ready
    public void start(){
       for(int i = 0; i < threads.length; i ++){   
