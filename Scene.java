@@ -15,7 +15,7 @@ public class Scene {
    private Save save;
    private Map map;
    private NPC npc;
-   private int frames;
+   private int frames, yInc;
    private double fps, startTime;
    public Scene(Scanner in){
       try{
@@ -91,7 +91,10 @@ public class Scene {
    public void render(Graphics bg, Graphics enemyG, Graphics playerG){
    
    //draw building
-      int yInc = save.render(bg, fps);
+      yInc = save.getPlayer().yInc(fps);
+      if(save.getPlayer().hasChanged()){
+         save.render(bg);
+      }
       frames++;
    //draw NPCs
       npc.render(enemyG, save.getPlayer(), yInc);
@@ -157,9 +160,9 @@ public class Scene {
       playerG.setFont(new Font("Arial", Font.BOLD, 20));
       fps = frames / ((System.currentTimeMillis() - startTime) / 1000.0);
       playerG.drawString("FPS: " + (int)fps, 15, 30);
-      playerG.drawString("vRes: " + (450 / yInc), 8, 70);
+      playerG.drawString("vRes: " + (450 / yInc), 5, 70);
       
-      if((System.currentTimeMillis() - startTime) > 1000){
+      if((System.currentTimeMillis() - startTime) > 500){
          frames = 1;
          startTime = System.currentTimeMillis();
       }

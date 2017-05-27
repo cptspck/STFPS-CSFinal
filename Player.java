@@ -12,7 +12,7 @@ import java.util.*;
 *@1.0.0
 *****************************************/
 public class Player extends Entity {
-   private double dX, dY, dR, dX2, dY2, speed, dirX, dirY, planeX, planeY;  //change in x, change in y, change in direction, max speed
+   private double dX, dY, dR, dX2, dY2, speed, dirX, dirY, planeX, planeY, oldX, oldY, oldDir;  //change in x, change in y, change in direction, max speed
    private double FOV = Math.PI / 2;
    private double[] distances;
    private Map m;
@@ -212,12 +212,22 @@ public class Player extends Entity {
    public double getPlaneY(){
       return planeY;
    }
+   public boolean hasChanged(){
+      if((oldX != myX) || (oldY != myY) || (oldDir != myDir)){
+         oldX = myX;
+         oldY = myY;
+         oldDir = myDir;
+         return true;
+      }
+      return false;
+   }
       /****************************************
 *Renders the graphics of the area that you, the palyer character are in
 
 *@param g Graphics of Map
 *****************************************/
-   public int newRender(Graphics g, double fps){
+   public int yInc(double fps){
+      
       if(fps > 35){
          yInc --;
          xInc --;
@@ -242,7 +252,9 @@ public class Player extends Entity {
       } else if(xInc <= 1){
          xInc = 1;
       }
-
+      return yInc;
+   }
+   public void newRender(Graphics g){
       //draw ceiling/sky box
       g.setColor(Color.WHITE.darker());
       g.fillRect(0, 0, 800, 225);
@@ -387,6 +399,5 @@ public class Player extends Entity {
             g.drawLine(x, 225 - lineHeight / 2, x, 225 + lineHeight / 2);
             */
          }
-      return yInc;
    }
 }

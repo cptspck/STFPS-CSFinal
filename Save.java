@@ -82,7 +82,7 @@ public class Save {
    //save it
       out.write(output);
    }
-   public int render(Graphics g, double fps){
-      return player.newRender(g, fps);
+   public void render(Graphics g){
+      player.newRender(g);
    }
 }
