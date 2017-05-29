@@ -176,10 +176,10 @@ public class Panel extends JPanel {
    }
    private class Mouse implements MouseMotionListener{
       public void mouseMoved(MouseEvent e){
-         int newX = (e.getX() * width) / widthReal;
-         int change = 400 - newX;
+         int newX = e.getX();
+         int change = (widthReal/2) - newX;
          if(scene != null){
-            scene.turnAbs(change/200.0);
+            scene.turnAbs(change / 500.0);
          }
          robot.mouseMove(widthReal / 2, heightReal / 2);
       }

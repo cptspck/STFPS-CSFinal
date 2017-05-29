@@ -183,6 +183,13 @@ public class Player extends Entity {
       double oldPlaneX = planeX;
       planeX = planeX * Math.cos(-a) - planeY * Math.sin(-a);
       planeY = oldPlaneX * Math.sin(-a) + planeY * Math.cos(-a);
+      
+      double oldDX = dX;
+      dX = dX * Math.cos(-a) - dY * Math.sin(-a);
+      dY = oldDX * Math.sin(-a) + dY * Math.cos(-a);
+      double oldDX2 = dX2;
+      dX2 = dX2 * Math.cos(-a) - dY2 * Math.sin(-a);
+      dY2 = oldDX2 * Math.sin(-a) + dY2 * Math.cos(-a);
       while(myDir >= (2*Math.PI)){
          myDir -= (2*Math.PI);
       }
