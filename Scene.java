@@ -17,6 +17,10 @@ public class Scene {
    private NPC npc;
    private int frames, yInc;
    private double fps, startTime;
+   private String nextScene;
+   public Scene(){
+      System.exit(1);
+   }
    public Scene(Scanner in){
       try{
          map = new Map(new Scanner( new File("map/" + in.next() + ".map")));
@@ -39,9 +43,22 @@ public class Scene {
          System.exit(0);
          return;
       }
+      nextScene = in.next();
       startTime = System.currentTimeMillis();
       frames = 0;
       fps = 0;
+   }
+   public Scene nextScene(){
+      try{
+         return new Scene(new Scanner(new File("scene/" + nextScene + ".sc")));
+      } catch(FileNotFoundException e){
+         System.out.println("Scene has bad next scene");
+         System.exit(0);
+         return new Scene();
+      }
+   }
+   public boolean shouldExit(){
+      return save.getPlayer().shouldExit();
    }
    public void forward(){
       save.getPlayer().forward();

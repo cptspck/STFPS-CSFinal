@@ -110,7 +110,7 @@ public class Map {
    public int getTexHeight(){
       return texHeight;
    }
-   private int getVal(int x, int y){
+   public int getVal(int x, int y){
       if(x == 1337 || y == 1337){
          return 0;
       }
@@ -128,7 +128,7 @@ public class Map {
       return val >= 10 && val < 20; //half height textures are between 10 and 19, inclusive
    }
    public boolean isClear(int x, int y){
-      return getVal(x, y) == 0; //only clear if its a 00
+      return getVal(x, y) <= 0; //only clear if its a 00 or negative
    }
    public boolean isVisible(int x, int y){
       return !isClear(x, y);
