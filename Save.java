@@ -38,8 +38,7 @@ public class Save {
          System.exit(0);
          return;
       }
-      map = m;
-      player = new Player(x, y, h, d, weapon, s, map);
+      player = new Player(x, y, h, d, weapon, s, m);
    }
    public Map getMap(){
       return map;

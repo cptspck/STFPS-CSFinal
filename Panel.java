@@ -111,6 +111,10 @@ public class Panel extends JPanel {
                try {
                   Thread.sleep(15);
                } catch (Exception e){}
+               if(scene.shouldLevel()){
+                  scene = scene.nextScene();
+                  scene.start();
+               }
             }
          }
       });

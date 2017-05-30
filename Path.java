@@ -40,6 +40,9 @@ public class Path{
       e.setDir(Math.atan((xList[cur] - e.getX())/(yList[cur] - e.getY())));
    }
    public void move(Enemy e){
+      if(xList.length <= 0){
+         return;
+      }
       double prevDistX = xList[cur] - e.getX();
       double prevDistY = yList[cur] - e.getY();
       double newDir = Math.atan2(xList[cur] - e.getX(), yList[cur] - e.getY());

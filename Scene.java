@@ -17,6 +17,8 @@ public class Scene {
    private NPC npc;
    private int frames, yInc;
    private double fps, startTime;
+   private String next;
+   public Scene(){} //for nextScene() to compile
    public Scene(Scanner in){
       try{
          map = new Map(new Scanner( new File("map/" + in.next() + ".map")));
@@ -39,9 +41,28 @@ public class Scene {
          System.exit(0);
          return;
       }
+      next = in.next();
       startTime = System.currentTimeMillis();
       frames = 0;
       fps = 0;
+   }
+   public Scene nextScene(){
+      Scene scene;
+      try{
+         scene = new Scene(new Scanner(new File("nextScene/" + next + ".sc")));
+      } catch(FileNotFoundException e){
+         System.out.println("Scene has bad next Scene");
+         System.exit(0);
+         return new Scene();
+      }
+      System.out.println("new planeX: " + scene.getPlaneX() + "\t| new planeY: " + scene.getPlaneY());
+      return scene;
+   }
+   public double getPlaneX(){
+      return save.getPlayer().getPlaneX();
+   }
+   public double getPlaneY(){
+      return save.getPlayer().getPlaneY();
    }
    public void forward(){
       save.getPlayer().forward();
@@ -87,6 +108,9 @@ public class Scene {
    }
    public void stopMovement(){
       save.getPlayer().stopMovement();
+   }
+   public boolean shouldLevel(){
+      return save.getPlayer().shouldLevel();
    }
    public void render(Graphics bg, Graphics enemyG, Graphics playerG){
    
