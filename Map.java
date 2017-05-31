@@ -59,10 +59,10 @@ public class Map {
       System.out.println("Width: " + width + "\t\t|\tHeight: " + height);
       
       loadTextures();
-      texWidth = texHeight = 64;
+      texWidth = texHeight = 1024;
    }
    private void loadTextures(){
-      textures = new int[10][64][64];
+      textures = new int[10][1024][1024];
       textures[1] = createTextureArray("GrassTexture.jpg");
       textures[2] = createTextureArray("RedTexture.jpg");
       textures[3] = createTextureArray("BlueTexture.jpg");

@@ -90,7 +90,7 @@ public class Panel extends JPanel {
                   }
                }
                //clear the screen
-               for(int x = 0; x < 800; x ++){
+               for(int x = 390; x < 800; x ++){
                   for(int y = 0; y < 450; y ++){
                      playerImage.setRGB(x, y, 0);
                   }
