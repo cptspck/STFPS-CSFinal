@@ -68,18 +68,14 @@ public class Save {
       g.setColor(new Color(119, 231, 239));
       g.drawLine(startX, startY, endX, endY);
    }
-   public void save(Writer out) throws Exception{
-   //make a string to save
-      String output = "";
-      output += x + " ";
-      output += y + " ";
-      output += d + " ";
-      output += h + " ";
-      output += w + " ";
-      output += s + " ";
-      
-   //save it
-      out.write(output);
+   public void save(PrintWriter out) throws Exception{
+      out.println(player.getX() + " ");
+      out.println(player.getY() + " ");
+      out.println(player.getDir() + " ");
+      out.println(player.getHealth() + " ");
+      out.println(w + " ");
+      out.println(player.getSpeed() + " ");
+      out.close();
    }
    public void render(Graphics g){
       player.newRender(g);

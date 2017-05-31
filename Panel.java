@@ -145,6 +145,7 @@ public class Panel extends JPanel {
             }
          }         
          if(e.getKeyCode() == KeyEvent.VK_Q && e.getModifiers() == KeyEvent.CTRL_MASK){
+            scene.save("save");
             System.exit(0);
          }
       }

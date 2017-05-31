@@ -46,10 +46,12 @@ public class NPC{
          threads[i] = new Thread(npc[i]);
       }
       dists = new double[npc.length];
+      loadTexts();
    }
    private void loadTexts(){
       textures = new int[6][][];
       textures[1] = createTextureArray("npc/dukat.png");
+      textures[2] = createTextureArray("npc/maquis.png");
    }
    private int[][] createTextureArray(String filename){
       BufferedImage image;
@@ -64,14 +66,14 @@ public class NPC{
       final int height = image.getHeight();
       final boolean hasAlphaChannel = image.getAlphaRaster() != null;
 
-      int[][] result = new int[height][width];
-      final int pixelLength = 3;
+      int[][] result = new int[height + 1][width + 1];
+      final int pixelLength = 4;
       for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
          int argb = 0;
-         //argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
-         argb += ((int) pixels[pixel + 0] & 0xff); // blue
-         argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
-         argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+         argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+         argb += ((int) pixels[pixel + 1] & 0xff); // blue
+         argb += (((int) pixels[pixel + 2] & 0xff) << 8); // green
+         argb += (((int) pixels[pixel + 3] & 0xff) << 16); // red
          result[row][col] = argb;
          col++;
          if (col == width) {
@@ -96,18 +98,19 @@ public class NPC{
          threads[i].stop();
       }
    }
-   public void save(Writer out) throws Exception{
-      String output = "";
-      output += npc.length + " ";
+   public void save(PrintWriter out) throws Exception{
+      out.println(npc.length + " ");
       for(int i = 0; i < npc.length; i ++){
-         output += npc[i].getX() + " ";
-         output += npc[i].getY() + " ";
-         output += npc[i].getHealth() + " ";
-         output += npc[i].getDir() + " ";
-         output += npc[i].getFOV() + " ";
-         output += npc[i].getWeapon().getSave() + " ";
-         output += npc[i].getPath().getSave() + " ";
+         out.print(npc[i].getX() + " ");
+         out.print(npc[i].getY() + " ");
+         out.print(npc[i].getHealth() + " ");
+         out.print(npc[i].getDir() + " ");
+         out.print(npc[i].getFOV() + " ");
+         out.print(npc[i].getFaction() + " ");
+         out.print(npc[i].getWeapon().getSave() + " ");
+         out.println(npc[i].getPath().getSave() + " ");
       }
+      out.close();
    }
    public void shoot(Weapon w){
       for(int i = 0; i < npc.length; i ++){
@@ -122,7 +125,7 @@ public class NPC{
          }
       }
    }
-   public void render(Graphics g, Player player, int xInc){
+   public void render(Graphics g, Player player, int xInc, int yInc){
       //housekeeping
       manage();
       
@@ -184,7 +187,7 @@ public class NPC{
             
             boolean canShoot = false;
             
-            for(int stripe = drawStartX; stripe < drawEndX; stripe++) {
+            for(int stripe = drawStartX; stripe < drawEndX; stripe+= xInc) {
                //the conditions in the if are:
                //1) it's in front of camera plane so you don't see things behind you
                //2) it's on the screen (left)
@@ -193,16 +196,25 @@ public class NPC{
                if(stripe == 400){
                   canShoot = false;
                }
-               if(transformY > 0 && stripe > 0 && stripe < 800 && transformY < player.getDist(stripe)){
+               if(transformY > 0 && stripe > 0 && stripe < 800 && transformY < player.getDist(stripe) && npc[i].getFaction() > 0){
                   if(stripe == 400){
                      canShoot = true;
                   }
-                  //for(int ya = drawStartY; ya < drawEndY; ya++){ //for every pixel of the current stripe
-                  g.setColor(color);
-                  int h = drawEndY - drawStartY;
-                  
-                  g.fillRect(stripe, drawStartY, xInc, h); 
-                 
+                  int texX = (int)((256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * (textures[npc[i].getFaction()][0].length) / spriteWidth) / 256.0);
+                  texX = (texX > (textures[npc[i].getFaction()][0].length-1)) ? (textures[npc[i].getFaction()][0].length-1) : texX;
+                  for(int ya = drawStartY; ya < drawEndY; ya+=yInc){ //for every pixel of the current stripe
+                     int h = 450;
+                     int d = (ya * 256) - (h * 128) + (spriteHeight * 128); //256 and 128 factors to avoid floats
+                     int texY = ((d * textures[npc[i].getFaction()][0].length) / spriteHeight) / 256;
+                     texY = (texY > (textures[npc[i].getFaction()].length-1)) ? (textures[npc[i].getFaction()].length-1) : texY;
+                     texY = (texY < 0) ? 0 : texY;
+                     texX = (texX < 0) ? 0 : texX;
+                     int c = textures[npc[i].getFaction()][texY][texX];
+                     if((c & 0x00FFFFFF) != 0){
+                        g.setColor(new Color(c));
+                        g.fillRect(stripe, ya, xInc, yInc); 
+                     }
+                  }
                }
             }
             npc[i].setShootability(canShoot);

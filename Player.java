@@ -31,14 +31,14 @@ public class Player extends Entity {
 *@param map Map
 *****************************************/
    public Player(double x, double y, double health, double dir, Weapon w, double s, Map map){
-      super(x, y, health, dir, w, Faction.STARFLEET);
+      super(x, y, health, Math.PI, w, Faction.STARFLEET);
       speed = s;
       m = map;
       distances = new double[800];
-      dirX = Math.sin(myDir);
-      dirY = Math.cos(myDir);
-      planeX = Math.sin(Math.PI - (myDir + (Math.PI/2.0)));
-      planeY = Math.cos(Math.PI - (myDir + (Math.PI/2.0)));
+      dirX = 0;
+      dirY = -1;
+      planeX = 1;
+      planeY = 0;
       
       yInc = 2;
       xInc = 2;
@@ -51,6 +51,9 @@ public class Player extends Entity {
 *****************************************/
    public double getFOV(){
       return FOV;
+   }
+   public double getSpeed(){
+      return speed;
    }
    public boolean shouldLevel(){
       return readyToLevel;
@@ -243,7 +246,7 @@ public class Player extends Entity {
 
 *@param g Graphics of Map
 *****************************************/
-   public int yInc(double fps){
+   public int[] yInc(double fps){
       
       if(fps > 25){
          yInc --;
@@ -269,7 +272,10 @@ public class Player extends Entity {
       } else if(xInc <= 1){
          xInc = 1;
       }
-      return yInc;
+      int[] out = new int[2];
+      out[0] = xInc;
+      out[1] = yInc;
+      return out;
    }
    public void newRender(Graphics g){
       //draw ceiling/sky box

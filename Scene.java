@@ -15,13 +15,14 @@ public class Scene {
    private Save save;
    private Map map;
    private NPC npc;
-   private int frames, yInc;
+   private int frames, yInc, xInc;
    private double fps, startTime;
-   private String nextScene;
+   private String nextScene, mapName;
    public Scene(){} //for nextScene() to compile
    public Scene(Scanner in){
+      mapName = in.next();
       try{
-         map = new Map(new Scanner( new File("map/" + in.next() + ".map")));
+         map = new Map(new Scanner( new File("map/" + mapName + ".map")));
       }catch(FileNotFoundException e){
          System.out.println("Scene has bad Map");
          System.exit(0);
@@ -108,13 +109,15 @@ public class Scene {
    public void render(Graphics bg, Graphics enemyG, Graphics playerG){
    
    //draw building
-      yInc = save.getPlayer().yInc(fps);
+      int[] incs = save.getPlayer().yInc(fps);
+      xInc = incs[0];
+      yInc = incs[1];
       if(save.getPlayer().hasChanged()){
          save.render(bg);
       }
       frames++;
    //draw NPCs
-      npc.render(enemyG, save.getPlayer(), yInc);
+      npc.render(enemyG, save.getPlayer(), xInc, yInc);
    
       playerG.setColor(new Color(255, 153, 0));
       playerG.fillRect(0, 400, 50, 50);
@@ -194,9 +197,15 @@ public class Scene {
    }
    public void save(String filename){
       try {
-         save.save(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("save/" + filename + ".wp"), "utf-8")));
-         
-         npc.save(new BufferedWriter(new OutputStreamWriter(new FileOutputStream("npc/" + filename + ".npc"), "utf-8")));
+         save.save(new PrintWriter("save/" + filename + ".save"));
+         npc.save(new PrintWriter("npc/" + filename + ".npc"));
+
+         PrintWriter sceneSave = new PrintWriter("scene/" + filename + ".sc");
+         sceneSave.println(mapName);
+         sceneSave.println(filename);
+         sceneSave.println(filename);
+         sceneSave.println(nextScene);
+         sceneSave.close();
       } catch(Exception e){System.out.println("could not save");}
    }
 }
