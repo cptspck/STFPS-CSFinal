@@ -87,7 +87,10 @@ public class Map {
       }
       int c = getVal(mapX, mapY);
       c = (c > 10)? c - 10: c;
-      if(x < 0 || x > textures[c].length || y < 0 || y > textures[c][x].length){
+      if(c < 0){
+         c = 0;
+      }
+      if(x < 0 || x > textures[0].length || y < 0 || y > textures[0][0].length){
          return 0;
       }
       if(x >= getTexWidth()){

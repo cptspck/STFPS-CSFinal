@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.AlphaComposite;
@@ -15,6 +15,7 @@ public class NPC{
    private Enemy[] npc;
    private double[] dists;
    private Thread[] threads;
+   private int[][][] textures;
    public NPC(Scanner in){
       npc = new Enemy[in.nextInt()];
       threads = new Thread[npc.length];
@@ -45,6 +46,40 @@ public class NPC{
          threads[i] = new Thread(npc[i]);
       }
       dists = new double[npc.length];
+   }
+   private void loadTexts(){
+      textures = new int[6][][];
+      textures[1] = createTextureArray("npc/dukat.png");
+   }
+   private int[][] createTextureArray(String filename){
+      BufferedImage image;
+      try{
+         image = ImageIO.read(new File("images/" + filename));
+      } catch(Exception e){
+         System.out.println("cant open image " + filename);
+         return new int[0][0];
+      }
+      final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+      final int width = image.getWidth();
+      final int height = image.getHeight();
+      final boolean hasAlphaChannel = image.getAlphaRaster() != null;
+
+      int[][] result = new int[height][width];
+      final int pixelLength = 3;
+      for (int pixel = 0, row = 0, col = 0; pixel < pixels.length; pixel += pixelLength) {
+         int argb = 0;
+         //argb += (((int) pixels[pixel] & 0xff) << 24); // alpha
+         argb += ((int) pixels[pixel + 0] & 0xff); // blue
+         argb += (((int) pixels[pixel + 1] & 0xff) << 8); // green
+         argb += (((int) pixels[pixel + 2] & 0xff) << 16); // red
+         result[row][col] = argb;
+         col++;
+         if (col == width) {
+            col = 0;
+            row++;
+         }
+      }
+      return result;
    }
    public Enemy[] getNPCs(){
       return npc;

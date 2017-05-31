@@ -17,7 +17,7 @@ public class Player extends Entity {
    private double[] distances;
    private Map m;
    private int yInc, xInc;
-   private boolean exit;
+   private boolean readyToLevel;
    /****************************************
 *Creates a player with starting position (x,y), sets its health value, gives it a direction in radians, gives it a weapon
 *and sets a map up, while setting its speed. It also sets up the faction that the player is in, Starfleet.
@@ -37,11 +37,12 @@ public class Player extends Entity {
       distances = new double[800];
       dirX = Math.sin(myDir);
       dirY = Math.cos(myDir);
-      planeX = 0;
-      planeY = 1;
+      planeX = Math.sin(Math.PI - (myDir + (Math.PI/2.0)));
+      planeY = Math.cos(Math.PI - (myDir + (Math.PI/2.0)));
+      
       yInc = 2;
       xInc = 2;
-      exit = false;
+      readyToLevel = false;
    }
    /****************************************
 *Returns the players Field of View
@@ -51,8 +52,8 @@ public class Player extends Entity {
    public double getFOV(){
       return FOV;
    }
-   public boolean shouldExit(){
-      return exit;
+   public boolean shouldLevel(){
+      return readyToLevel;
    }
    /****************************************
 *Checks to ensure that the player character isn't moving into any walls.
@@ -97,7 +98,10 @@ public class Player extends Entity {
       if(myX >= m.getWidth() - 0.01)
          myX = m.getWidth() - 0.01;
          
-      exit = (m.getVal((int)myX, (int)myY) == -1);
+
+      if(m.getVal((int)myX, (int)myY) == -1){
+         readyToLevel = true;
+      }
    }
       /****************************************
 *Stops all player movement
@@ -241,11 +245,11 @@ public class Player extends Entity {
 *****************************************/
    public int yInc(double fps){
       
-      if(fps > 35){
+      if(fps > 25){
          yInc --;
          xInc --;
       }
-      if(fps < 20){
+      if(fps < 15){
          yInc ++;
       }
       if(fps < 10){
