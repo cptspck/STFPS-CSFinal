@@ -73,6 +73,11 @@ public class Map {
       textures[8] = createTextureArray("SpaceTexture.jpg");
       textures[9] = createTextureArray("PrisonTexture.jpg");
    }
+   public void dealloc(){
+      textures = null;
+      matrix = null;
+      System.gc();
+   }
    public int getPixel(int mapX, int mapY, int x, int y){
       if(isClear(mapX, mapY)){
          return 0;
@@ -118,9 +123,13 @@ public class Map {
          return 0;
       }
       if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight()){
-         return 10;
+         return 1;
       }
-      return matrix[x][y];
+      int out = matrix[x][y];
+      while(out > 19){
+         out /= 10;
+      }
+      return out;
    }
    public boolean isFull(int x, int y){
       int val = getVal(x, y);

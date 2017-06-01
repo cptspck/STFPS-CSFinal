@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.awt.event.*;
 import java.awt.AlphaComposite;
 import java.awt.image.*;
@@ -35,8 +36,11 @@ public class Panel extends JPanel {
    private Robot robot;
    protected boolean waiting = false;
     
+   private JFrame f;
+   
    private int playerShooting = 0;
-   public Panel(int w, int h){      
+   public Panel(int w, int h, JFrame frame){      
+      f = frame;
       try{
          robot = new Robot();
       } catch(AWTException e){
@@ -112,6 +116,7 @@ public class Panel extends JPanel {
                   Thread.sleep(15);
                } catch (Exception e){}
                if(scene.shouldLevel()){
+                  scene.dealloc();
                   scene = scene.nextScene();
                   scene.start();
                }
@@ -123,6 +128,14 @@ public class Panel extends JPanel {
    }
    public void playIntro(){
       waiting = true;
+      try{
+         Desktop.getDesktop().open(new File("Main.mp4"));
+      }catch(IOException e){}
+      f.setVisible(false);
+      try {
+         Thread.sleep(72000);
+      } catch(Exception e){}
+      f.setVisible(true);
       key = new Key();
       addKeyListener(key);
       final Panel panel = this;
@@ -145,7 +158,9 @@ public class Panel extends JPanel {
             }
          }         
          if(e.getKeyCode() == KeyEvent.VK_Q && e.getModifiers() == KeyEvent.CTRL_MASK){
-            scene.save("save");
+            if(scene != null){
+               scene.save("save");
+            }
             System.exit(0);
          }
       }

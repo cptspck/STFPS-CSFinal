@@ -6,6 +6,13 @@ public class Enemy extends Entity {
    private Entity target;
    private double FOV;
    private boolean canShoot;
+   public Enemy(){
+      super(0, 0, 0, 0, new Weapon(new Scanner("0 0 0 0 0 0 0 0 0"), "default"), 1);
+      path = new Path(new Scanner("0 0"), "l1/path");
+      triggered = false;
+      alive = false;
+      FOV = 0;
+   }
    public Enemy(double x, double y, double health, double dir, double fov, Weapon w, Path p, int faction, Enemy[] others){
       super(x, y, health, dir, w, faction);
       path = p;

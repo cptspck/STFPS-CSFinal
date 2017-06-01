@@ -47,16 +47,25 @@ public class Scene {
       frames = 0;
       fps = 0;
    }
+   public void dealloc(){
+      save.stop();
+      npc.stop();
+      map.dealloc();
+   }
    public Scene nextScene(){
-      Scene scene;
-      try{
-         scene = new Scene(new Scanner(new File("nextScene/" + nextScene + ".sc")));
-      } catch(FileNotFoundException e){
-         System.out.println("Scene has bad next Scene");
-         System.exit(0);
-         return new Scene();
+      if(nextScene.equals("final")){
+          JOptionPane.showMessageDialog(new JFrame(), "You Win!");
+          while(true){}
       }
-      return scene;
+         Scene scene;
+         try{
+            scene = new Scene(new Scanner(new File("nextScene/" + nextScene + ".sc")));
+         } catch(FileNotFoundException e){
+            System.out.println("Scene has bad next Scene");
+            System.exit(0);
+            return new Scene();
+         }
+         return scene;
    }
    public void forward(){
       save.getPlayer().forward();
